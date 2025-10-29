@@ -1,0 +1,42 @@
+image: 'atlassian/default-image:2'
+clone:
+  depth: full
+pipelines:
+  branches:
+    sandbox:
+      - step:
+          name: Deployment to development
+          deployment: test
+          script: &deploy_script
+          - ls -altr
+          - echo "$BITBUCKET_REPO_SLUG"
+          - apt-get update && apt-get install -y openssh-client
+          - echo "Add ssh config"
+          - echo "Host github.com" >> ~/.ssh/config
+          - echo "HostName github.com" >> ~/.ssh/config
+          - echo "User git" >> ~/.ssh/config
+          - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+          - echo "IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+          - echo "Run git config "
+          - git config core.sshCommand "ssh -i ~/.ssh/id_rsa"
+          - git remote add github git@github.com:wwccholdings/micro-website.git
+          - git ls-remote --exit-code --heads github $BITBUCKET_BRANCH >/dev/null 2>&1 && git pull github $BITBUCKET_BRANCH || { echo "Branch $BITBUCKET_BRANCH does not exist on the remote repository."; };
+          - git push github $BITBUCKET_BRANCH
+
+    staging:
+      - step:
+          name: Deployment to staging
+          deployment: staging
+          script: *deploy_script
+    preprod:
+      - step:
+          name: Deployment to Preprod
+          deployment: preprod
+          script: *deploy_script
+    main:
+      - step:
+          name: Deployment to preprod
+          deployment: production
+          script: *deploy_script
+   
+

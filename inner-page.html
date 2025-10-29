@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat With Pete</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* Basic reset */
+    *,
+    *::after,
+    *::before {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body,
+    table,
+    td,
+    a {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    button {
+      background-color: unset;
+    }
+
+    table,
+    td {
+      mso-table-lspace: 0;
+      mso-table-rspace: 0;
+    }
+
+    img {
+      -ms-interpolation-mode: bicubic;
+    }
+
+    body,
+    html {
+      font-family: 'Lora', Arial, sans-serif !important;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .main-wrapper {
+      width: 100%;
+      height: 100vh;
+      min-height: 778px;
+      background: linear-gradient(140deg, #617E93, #E1BDA7);
+      position: relative;
+    }
+
+    .inner-page {
+      min-width: 358px;
+      max-width: 360px;
+      background-color: #FFF;
+      margin: 0 auto;
+      padding: 20px 16px 32px;
+      height: 778px;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      border-radius: 53px;
+      position: absolute;
+      top: 49.8%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #backToHome {
+      display: none;
+      max-width: 360px;
+      padding: 16px 20px;
+      position: sticky;
+      top: 45px;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: #FDFCFA;
+      width: 100%;
+      border-top-left-radius: 52px;
+      border-top-right-radius: 52px;
+    }
+
+    .chat {
+      position: fixed;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 360px;
+      z-index: 1000;
+      padding: 12px 0 16px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, #FFF 88.18%);
+      border-bottom-left-radius: 50px;
+      border-bottom-right-radius: 50px;
+    }
+
+    #popup .popup-inner {
+      position: fixed;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 360px;
+      background: linear-gradient(180deg, rgba(184, 195, 191, 0.00) 0%, #B8C3BF 100%);
+      backdrop-filter: blur(4px);
+      padding: 32px 30px;
+      text-align: center;
+      border-bottom-left-radius: 50px;
+      border-bottom-right-radius: 50px;
+    }
+
+    /* Chrome / Safari */
+    .inner-page::-webkit-scrollbar {
+      display: none;
+    }
+
+    .frame-wrapper {
+      background-image: url('/image/titanium-frame.png');
+      background-position: center;
+      background-attachment: scroll;
+      background-repeat: no-repeat;
+      height: 100%;
+      min-height: 778px;
+      position: relative;
+    }
+
+    @media only screen and (max-width: 640px) {
+      .main-wrapper {
+        height: 100%;
+      }
+
+      .frame-wrapper {
+        background-image: none;
+      }
+
+      .inner-page {
+        position: static;
+        height: 100%;
+        transform: none !important;
+        border-radius: 0;
+        padding: 0 16px 32px;
+      }
+
+      .chat,
+      #popup .popup-inner {
+        bottom: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      #backToHome {
+        top: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        padding: 10px 16px;
+      }
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+  // Add style for after-content-exists elements
+  const style = document.createElement('style');
+  style.textContent = `
+    .after-content-exists {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+    .after-content-exists.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .ai-response {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .ai-response.visible {
+      opacity: 1;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Function to load chat content
+  function fetchChatContent() {
+    return fetch('/chat.json')
+      .then(response => response.json())
+      .catch(error => console.error('Error loading chat content:', error));
+  }
+
+  // Function to create chat message structure
+  function createMessageStructure(message) {
+    const humanMessage = `
+      <tr>
+        <td>
+          <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
+            <tr>
+              <td width="10%"></td>
+              <td width="90%" valign="top" style="padding: 12px; background-color: #F3EBE0; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+                <p style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                  ${message.human}
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr><td style="padding-bottom: 16px;"></td></tr>`;
+
+    const aiMessage = `
+      <tr>
+        <td>
+          <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
+            <tr>
+              <td align="right" style="padding: 8px 8px 0 0;">
+                <div style="position: relative; display: inline-block; width: 100%;">
+                  <span style="position: absolute; top: -7px; right: -14px; font-size: 20px; color: #282929; line-height: 18px; text-decoration: none; padding: 0 4px; border: 1px solid #F2ECE9; border-radius: 13px; background: #fff;">⋯</span>
+                </div>
+              </td>
+            </tr>
+            <tr id="response">
+              <td style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+                <div class="ai-response"></div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+
+    return { humanMessage, aiMessage };
+  }
+
+  // Function to stream text
+  function streamText(element, text, speed = 30) {
+    let index = 0;
+    element.textContent = '';
+    element.style.opacity = '1';
+
+    function addChar() {
+      if (index < text.length) {
+        element.textContent += text.charAt(index);
+        index++;
+        setTimeout(addChar, Math.random() * 20 + speed);
+      } else {
+        // After streaming is complete, check for after-content elements
+        const afterContentElements = element.getElementsByClassName('after-content-exists');
+        Array.from(afterContentElements).forEach(el => {
+          if (el.textContent.trim().length > 0) {
+            el.classList.add('show');
+          }
+        });
+      }
+    }
+
+    addChar();
+  }
+
+  // Initialize chat
+  fetchChatContent().then(chatData => {
+    const chatContainer = document.querySelector('#response').parentElement.parentElement;
+    chatContainer.innerHTML = ''; // Clear existing content
+
+    chatData.forEach(message => {
+      const { humanMessage, aiMessage } = createMessageStructure(message);
+      
+      // Add human message
+      // chatContainer.insertAdjacentHTML('beforeend', humanMessage);
+      
+      // Add AI message structure
+      chatContainer.insertAdjacentHTML('beforeend', aiMessage);
+      
+      // Get the AI response container
+      const aiResponseDiv = chatContainer.querySelector('.ai-response:last-child');
+      
+      // Start streaming the AI response
+      setTimeout(() => {
+        streamText(aiResponseDiv, message.ai);
+      }, 500);
+    });
+  });
+
+  // Keep your existing event listeners for popup, back button, etc.
+  // ... rest of your existing code ...
+});
+    // Add these functions at the start of your script
+    function fetchChatContent() {
+      return fetch('/chat.json')
+        .then(response => response.json())
+        .catch(error => console.error('Error loading chat content:', error));
+    }
+
+    // Function to convert markdown to HTML
+    function markdownToHtml(markdown) {
+      // Basic markdown conversion - expand as needed
+      return markdown
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+        .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
+        .replace(/\n\n/g, '</p><p>') // Paragraphs
+        .replace(/\n/g, '<br>') // Line breaks
+        .replace(/#{3} (.*)/g, '<h3>$1</h3>') // H3
+        .replace(/#{2} (.*)/g, '<h2>$1</h2>') // H2
+        .replace(/#{1} (.*)/g, '<h1>$1</h1>'); // H1
+    }
+
+    // Function to create chat HTML structure
+    function createChatHtml(message) {
+      const humanHtml = `
+    <tr>
+      <td>
+        <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
+          <tr>
+            <td width="10%"></td>
+            <td width="90%" valign="top" style="padding: 12px; background-color: #F3EBE0; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+              <p style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                ${message.human}
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td style="padding-bottom: 16px;"></td></tr>`;
+
+      const aiHtml = `
+    <tr>
+      <td>
+        <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
+          <tr>
+            <td align="right" style="padding: 8px 8px 0 0;">
+              <div style="position: relative; display: inline-block; width: 100%;">
+                <span style="position: absolute; top: -7px; right: -14px; font-size: 20px; color: #282929; line-height: 18px; text-decoration: none; padding: 0 4px; border: 1px solid #F2ECE9; border-radius: 13px; background: #fff;">⋯</span>
+              </div>
+            </td>
+          </tr>
+          <tr id="response">
+            <td style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+              <div class="ai-response">${markdownToHtml(message.ai)}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
+
+      return humanHtml + aiHtml;
+    }
+
+    // Modify your existing DOMContentLoaded event handler
+    document.addEventListener('DOMContentLoaded', function () {
+      // Add style to hide after-content-exists elements by default
+      const style = document.createElement('style');
+      style.textContent = `
+    .after-content-exists {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+    .after-content-exists.show {
+      opacity: 1;
+      visibility: visible;
+    }
+  `;
+      document.head.appendChild(style);
+
+      const openButton = document.getElementById('openPopup');
+      const popup = document.getElementById('popup');
+      const backToHomeBtn = document.getElementById('backToHome');
+
+      // Hide popup initially
+      popup.style.display = 'none';
+
+      // Rest of your existing event listeners
+      openButton.addEventListener('click', function () {
+        popup.style.display = 'block';
+      });
+
+      popup.addEventListener('click', function (event) {
+        if (event.target === popup) {
+          popup.style.display = 'none';
+        }
+      });
+
+      // const backToHomeBtn = document.getElementById('backToHome');
+      const innerPage = document.querySelector('.inner-page');
+
+      function handleScroll(scrollTop) {
+        if (scrollTop >= 127) {
+          backToHomeBtn.style.display = 'flex';
+        } else {
+          backToHomeBtn.style.display = 'none';
+        }
+      }
+
+      // Initial state
+      backToHomeBtn.style.display = 'none';
+
+      // Attach event based on screen size
+      function attachScrollHandler() {
+        if (window.innerWidth > 640) {
+          // Remove window scroll if exists
+          window.removeEventListener('scroll', windowScrollHandler);
+          // Add inner-page scroll
+          innerPage.addEventListener('scroll', innerScrollHandler);
+        } else {
+          // Remove inner scroll if exists
+          innerPage.removeEventListener('scroll', innerScrollHandler);
+          // Add window scroll
+          window.addEventListener('scroll', windowScrollHandler);
+        }
+      }
+
+      // Define handlers
+      function windowScrollHandler() {
+        handleScroll(window.scrollY);
+      }
+
+      function innerScrollHandler() {
+        handleScroll(innerPage.scrollTop);
+      }
+
+      // Attach initially
+      attachScrollHandler();
+
+      // Reattach on resize (when crossing 640px)
+      window.addEventListener('resize', attachScrollHandler);
+
+      const responseContainer = document.getElementById('response');
+      const originalContent = responseContainer.innerHTML;
+
+      // Function to extract text content from HTML elements
+      function extractTextNodes(element, texts = []) {
+        Array.from(element.childNodes).forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+            texts.push({
+              node: node,
+              text: node.textContent
+            });
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            extractTextNodes(node, texts);
+          }
+        });
+        return texts;
+      }
+
+      // Function to check and show elements with content
+      function checkAndShowElement(element) {
+        if (element && element.textContent.trim().length > 0) {
+          element.classList.add('show');
+        }
+      }
+
+      // Modified typeText function to handle after-content elements
+      function typeText(textNodes, currentNodeIndex = 0, currentCharIndex = 0) {
+        if (currentNodeIndex >= textNodes.length) {
+          // After typing is complete, check all after-content elements
+          const afterContentElements = responseContainer.getElementsByClassName('after-content-exists');
+          Array.from(afterContentElements).forEach(element => {
+            checkAndShowElement(element);
+          });
+          return;
+        }
+
+        const {
+          node,
+          text
+        } = textNodes[currentNodeIndex];
+
+        if (currentCharIndex === 0) {
+          node.textContent = '';
+        }
+
+        if (currentCharIndex < text.length) {
+          node.textContent += text[currentCharIndex];
+
+          // Check parent elements for after-content-exists class
+          let currentElement = node.parentElement;
+          while (currentElement) {
+            if (currentElement.classList.contains('after-content-exists')) {
+              checkAndShowElement(currentElement);
+            }
+            currentElement = currentElement.parentElement;
+          }
+
+          setTimeout(() => {
+            typeText(textNodes, currentNodeIndex, currentCharIndex + 1);
+          }, Math.random() * 20 + 10);
+        } else {
+          setTimeout(() => {
+            typeText(textNodes, currentNodeIndex + 1, 0);
+          }, 100);
+        }
+      }
+
+      // Initialize streaming
+      setTimeout(() => {
+        const temp = document.createElement('div');
+        temp.innerHTML = originalContent;
+
+        // Save the structure but clear text content
+        responseContainer.innerHTML = originalContent;
+        const textNodes = extractTextNodes(responseContainer);
+
+        // Hide all after-content-exists elements initially
+        const afterContentElements = responseContainer.getElementsByClassName('after-content-exists');
+        Array.from(afterContentElements).forEach(element => {
+          element.classList.remove('show');
+        });
+
+        // Clear all text nodes
+        textNodes.forEach(({
+          node
+        }) => {
+          node.textContent = '';
+        });
+
+        // Start typing animation
+        typeText(textNodes);
+      }, 500);
+
+      // Rest of your existing code...
+    });
+
+    // Load chat content
+    fetchChatContent().then(chatData => {
+      const chatContainer = document.querySelector('#response').parentElement.parentElement;
+      chatContainer.innerHTML = ''; // Clear existing content
+
+      chatData.forEach(message => {
+        const messageHtml = createChatHtml(message);
+        const tempDiv = document.createElement('div');
+        function extractTextNodes(element, texts = []) {
+          Array.from(element.childNodes).forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+              texts.push({
+                node: node,
+                text: node.textContent
+              });
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+              extractTextNodes(node, texts);
+            }
+          });
+          return texts;
+        }
+
+        tempDiv.innerHTML = messageHtml;
+
+        // Extract text nodes for typing animation
+        const aiResponse = tempDiv.querySelector('.ai-response');
+        const textNodes = extractTextNodes(aiResponse);
+
+        // Add to container
+        chatContainer.insertAdjacentHTML('beforeend', messageHtml);
+
+        // Start typing animation for this message
+        typeText(textNodes);
+      });
+    });
+  </script>
+</head>
+
+<body width="100%"
+  style="font-family: 'Lora', Arial, sans-serif ; margin: 0; padding: 0 !important; mso-line-height-rule: exactly;">
+  <center class="main-wrapper">
+    <div class="frame-wrapper">
+      <!-- back -->
+      <div id="backToHome">
+        <button type="button" style="cursor: pointer; border: none; background: none; margin-right: auto;"
+          onclick="if (document.referrer) { history.back(); } else { window.location.href = '/'; }">
+          <img src="/image/angle-left.png" alt="Left angle"
+            style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
+          <span
+            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle;">
+            Go Home
+          </span>
+        </button>
+      </div>
+      <div class="inner-page">
+        <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+          style="margin: auto;">
+
+          <!-- section-1 -->
+          <tr>
+            <td align="center" valign="top">
+              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                style="margin: auto;">
+                <tr>
+                  <td width="25%" valign="middle" style="padding: 4px 0;">
+                    <img src="/image/logo.png" alt="Logo"
+                      style="width: 32px; height: auto; display: block; vertical-align: middle;" />
+                  </td>
+                  <td width="25%" valign="middle" align="center">
+                    <div style="padding-bottom: 2px;">
+                      <img src="/image/chat-with-pete-black.png" alt="Chat with Pete"
+                        style="width: 16px; height: auto; display: inline-block; vertical-align: middle; padding-right: 4px;" />
+                      <span
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                        Pete
+                      </span>
+                    </div>
+                    <p
+                      style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 16px; letter-spacing: 0.12px; color: #606161; display: inline-block; vertical-align: middle; margin: 0;">
+                      Apr 03, 2025
+                    </p>
+                  </td>
+                  <td width="25%" align="right" valign="middle" style="padding: 4px 0;">
+                    <a href="#"
+                      style="display: inline-block; padding: 4px 10px; border-radius: 24px; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); background-color: #647D74; text-decoration: none; color: #fff; font-family: 'Lora', Arial, san-serif; font-size: 12px; font-weight: 700; line-height: 16px; letter-spacing: 0.12px;">
+                      Free Trial
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 20px"></td>
+          </tr>
+
+          <!-- section-2 -->
+          <tr>
+            <td valign="top" style="padding: 10px 0;">
+              <button type="button" id="back" style="cursor: pointer; border: none;"
+                onclick="if (document.referrer) { history.back(); } else { window.location.href = '/'; }">
+                <img src="/image/angle-left.png" alt="Left angle"
+                  style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
+                <span
+                  style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                  Go Home
+                </span>
+              </button>
+            </td>
+          </tr>
+
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 16px"></td>
+          </tr>
+
+          <!-- section-3 -->
+          <tr>
+            <td valign="top"
+              style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+              <p
+                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                Hi My name is Pete and I’m here to help you with your spiritual journey.
+              </p>
+            </td>
+          </tr>
+
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 16px"></td>
+          </tr>
+
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 16px"></td>
+          </tr>
+
+          <!-- section-5 -->
+          <tr>
+            <td>
+              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                style="margin: auto;">
+                <tr>
+                  <td align="right" style="padding: 8px 8px 0 0;">
+                    <div style="position: relative; display: inline-block; width: 100%;">
+                      <span
+                        style="position: absolute; top: -7px; right: -14px; font-size: 20px; color: #282929; line-height: 18px; text-decoration: none; padding: 0 4px; border: 1px solid #F2ECE9; border-radius: 13px; background: #fff;">⋯</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr id="response">
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 40px"></td>
+          </tr>
+        </table>
+      </div>
+      <!-- chat -->
+      <div class="chat">
+        <button type="button" id="openPopup"
+                style="font-family: 'Lora', Georgia, serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #606161; background: none; border: 1px solid #839790; width: 100%; cursor: pointer; padding: 0; text-align: left; max-width: 328px; background-color: #fff; padding: 12px 16px; border-radius: 12px;">
+          Let's Chat...
+        </button>
+      </div>
+
+      <!-- popup -->
+      <div id="popup"
+           style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; background-color: transparent;">
+        <div class="popup-inner">
+
+          <div
+                  style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <img src="/image/cross-connect.png" style="width: 48px; height: auto; display: inline-block;"
+                 alt="cross connect" />
+          </div>
+
+          <p
+                  style="font-size: 18px; font-weight: 700; color: #181818; line-height: 22px; margin: 0 0 12px 0; letter-spacing: 0.18px;">
+            Continue the conversation in <br /> our full app.
+          </p>
+
+          <p style="font-size: 16px; color: #1F2020; line-height: 20px; margin: 0 0 24px 0;">
+            Short description with key features.
+          </p>
+
+          <div style="display: flex; gap: 8px; justify-content: center;">
+            <a href="#"
+               style="padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: transparent; letter-spacing: 0.14px; color: #647D74; border: 2px solid #647D74;">
+              Explore features
+            </a>
+
+            <a href="#"
+               style="padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: #647D74; letter-spacing: 0.14px; color: #ffffff; border: 2px solid transparent;">
+              Download App
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </center>
+</body>
+</html>
