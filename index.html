@@ -90,6 +90,124 @@
       position: relative;
     }
 
+    .card {
+      color: white;
+      text-align: center;
+      border-radius: 16px;
+      padding: 16px;
+      width: 100%;
+      box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15);
+      background-image: url('/image/bg-ask-pete.png');
+      background-size: inherit;
+      background-position: center 25%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(24, 24, 24, 0.35);
+      border-radius: 12px;
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .quote-text {
+      font-size: 18px;
+      color: #fff;
+      line-height: 22px;
+      letter-spacing: 0.18px;
+    }
+
+    .quote-text>span {
+      font-size: 24px;
+      color: #fff;
+      font-weight: 600;
+      line-height: 28px;
+      text-shadow: 0 1px 1px rgba(91, 114, 106, 0.40);
+    }
+
+    .verse {
+      font-size: 14px;
+      line-height: 18px;
+      color: #fff;
+      text-shadow: 0 1px 1px rgba(91, 114, 106, 0.40);
+      margin: 12px 0 28px;
+    }
+
+    .ask-pete-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 134px;
+      background-color: #647D74;
+      margin: 0 auto;
+      padding: 8px 16px;
+      border-radius: 24px;
+      box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15);
+      font-size: 14px;
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 0.14px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    @property --angle {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    .ask-pete-btn::after {
+      --angle: 0deg;
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 103%;
+      height: 110%;
+      background-image: conic-gradient(from var(--angle), #36696D, #BCBF8D);
+      border-radius: 24px;
+      z-index: -1;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        --angle: 0deg;
+      }
+
+      to {
+        --angle: 360deg;
+      }
+    }
+
+    .ask-pete-btn img {
+      width: 16px;
+      height: 16px;
+    }
+
+    .button:hover {
+      background-color: #3b684f;
+    }
+
+    .footer-text {
+      font-size: 16px;
+      line-height: 20px;
+      color: #fff;
+      margin-top: 10px;
+    }
+
     @media only screen and (max-width: 640px) {
       .main-wrapper {
         height: 100%;
@@ -111,7 +229,7 @@
 
 <body width="100%"
   style="font-family: 'Lora', Arial, sans-serif ; margin: 0; padding: 0 !important; mso-line-height-rule: exactly;">
-  <center class="main-wrapper">
+  <div class="main-wrapper">
     <!-- frame wrapper -->
     <div class="frame-wrapper">
       <!-- inner page -->
@@ -197,10 +315,21 @@
                 style="margin: auto;">
                 <tr>
                   <td valign="middle">
-                    <a href="chat.html" style="display: block;">
-                      <img src="/image/verse_microsite.png" width="328" height="auto" alt="User"
-                        style="display: block; vertical-align: middle;" />
-                    </a>
+                    <div class="card">
+                      <div class="card-content">
+                        <p class="quote-text">
+                          <span class="quote">“</span>For God so loved the world, that he gave his only begotten Son,
+                          that whosoever believeth in
+                          him should not perish but have everlasting life.<span class="quote">”</span>
+                        </p>
+                        <p class="verse">John 3:16</p>
+                        <a href="chat.html" class="ask-pete-btn"><img src="/image/chat-with-pete.png"
+                            class="chat-with-pete" alt="chat with pete" /> Ask Pete</a>
+                        <p class="footer-text">Want to know more about this verse</p>
+                      </div>
+                    </div>
+                    <!-- <img src="/image/verse_microsite.png" width="328" height="auto" alt="User"
+                        style="display: block; vertical-align: middle;" /> -->
                   </td>
                 </tr>
               </table>
@@ -279,14 +408,15 @@
                         <td valign="middle" align="center" style="padding: 0 20px">
                           <h3
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
-                            Personalized Spiritual Guidance</h3>
+                            Pete - Your Spiritual Guide</h3>
                           <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_01.png"
                             alt="Chat with Pete"
                             style="display: block; width: 248px; height: auto; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
                           <p
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
-                            No more scrolling or searching — Cross Connect brings relevant scriptures and spiritual
-                            guidance right to you. The more you connect with Pete, the deeper your faith grows.
+                            Meet Pete — the heart of Cross Connect. Think of Pete as a friend who’s always there to
+                            listen, encourage, and point you back to God’s truth. No matter what’s on your heart — big
+                            or small — you’ll never have to walk through it alone.
                           </p>
                         </td>
                       </tr>
@@ -307,8 +437,9 @@
                             style="width: 248px; height: auto; display: block; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
                           <p
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
-                            As you talk with Pete, your journal builds itself — capturing your thoughts, prayers, and
-                            progress. Everything is saved, organized, and searchable whenever you need them.
+                            The world's first automated spiritual journal. As you talk with Pete, your journal builds
+                            itself — all of your key moments, conversations, and reflections are captured instantly,
+                            creating a richer, more intuitive journaling experience than ever before!
                           </p>
                         </td>
 
@@ -324,16 +455,16 @@
                         <td valign="middle" align="center" style="padding: 0 20px">
                           <h3
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
-                            Dynamic Sections Grow <br />
+                            Personalized Cards Grow
                             As You Do</h3>
                           <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_04.png"
                             alt="Smart Journaling Experience"
                             style="width: 248px; height: auto; display: block; vertical-align: middle; border: 8px solid rgba(100, 125, 116, 0.10); border-radius: 24px;" />
                           <p
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
-                            Ask questions, explore biblical stories designed just for you, and learn in a way that feels
-                            personal and alive. From creating prayers to discovering apostles like Junia, everything is
-                            shaped by what you’re seeking.
+                            These are Personal Conversation Cards — designed for you and the topics Christians wrestle
+                            with most: crisis, forgiveness, faith, purpose, and relationships. For the first time, get
+                            meaningful, profound biblical feedback where and when you need it most.
                           </p>
                         </td>
                       </tr>
@@ -354,8 +485,8 @@
                             style="width: 248px; height: auto;display: block; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
                           <p
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
-                            Explore the Bible like never before, ask questions as you go and reflect on how you feel.
-                            Screen grab of Bible
+                            More than a Bible — an interactive, integrated experience connected with Pete. Ask
+                            questions, explore meaning, and understand the deeper context of Scripture in real time.
                           </p>
                         </td>
                       </tr>
@@ -375,7 +506,7 @@
           <tr>
             <td style="border-radius: 12px 12px 0 0;">
               <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                style="background:linear-gradient(135deg,#6f7b74 0%,#b89f84 100%); border-radius:12px; padding:16px; box-shadow:0 2px 10px rgba(0,0,0,0.06);">
+                style="background:linear-gradient(90deg,#647D74 0%,#b89f84 100%); border-radius:12px; padding:16px; box-shadow:0 2px 10px rgba(0,0,0,0.06);">
                 <tr>
                   <td align="center">
                     <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_05.png" alt="Cross"
@@ -385,25 +516,18 @@
 
                 <tr>
                   <td align="center" style="padding:10px 0 16px;">
-                    <div
-                      style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:700; text-align:center;">
-                      Want to know more about this verse
+                    <div>
+                      <div
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:700; text-align:center; margin-bottom: 16px;">
+                        Learn more about our "Cross Connect Pendant (Smart Cross)" — a sacred wearable that bridges
+                        your
+                        faith and your daily life.
+                      </div>
+                      <a href="#" target="_blank"
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; display:inline-block; width: 200px; max-width: 200px; background-color:#647D74; color:#ffffff; text-decoration: none; font-weight: 700; font-size: 14px; line-height: 18px;   letter-spacing: 0.14px; padding: 8px 16px; border-radius: 24px; letter-spacing: 0.2px;">
+                        Pre-Order
+                      </a>
                     </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td align="center">
-                    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td align="center">
-                          <a href="#" target="_blank"
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; display:inline-block; background-color:#647D74; color:#ffffff; text-decoration:none; font-weight:700; font-size:14px; line-height: 18px;   letter-spacing: 0.14px; padding:8px 16px; border-radius:24px; letter-spacing:0.2px;">
-                            Pre-Order
-                          </a>
-                        </td>
-                      </tr>
-                    </table>
                   </td>
                 </tr>
               </table>
@@ -531,7 +655,7 @@
         </table>
       </div>
     </div>
-  </center>
+  </div>
 </body>
 
 </html>
