@@ -50,27 +50,31 @@
       text-decoration: none;
     }
 
+    /* custom classes */
     .main-wrapper {
       width: 100%;
       height: 100vh;
-      min-height: 778px;
       background: linear-gradient(140deg, #617E93, #E1BDA7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .inner-page {
-      min-width: 358px;
-      max-width: 360px;
-      height: 778px;
-      background-color: #FFF;
-      margin: 0 auto;
-      padding: 32px 16px;
       position: absolute;
       top: 49.8%;
       left: 50%;
       transform: translate(-50%, -50%);
-      border-radius: 53px;
-      overflow: auto;
+      height: 87vh;
+      max-height: 798px;
+      aspect-ratio: 9 / 19.5;
+      width: auto;
+      background: #FFF;
+      border-radius: min(6vh, 58px);
+      padding: 32px 16px;
+      overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      z-index: 2;
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
@@ -78,16 +82,6 @@
     /* Chrome / Safari */
     .inner-page::-webkit-scrollbar {
       display: none;
-    }
-
-    .frame-wrapper {
-      background-image: url('/image/titanium-frame.png');
-      background-position: center;
-      background-attachment: scroll;
-      background-repeat: no-repeat;
-      height: 100%;
-      min-height: 778px;
-      position: relative;
     }
 
     .card {
@@ -179,7 +173,24 @@
       background-image: conic-gradient(from var(--angle), #36696D, #BCBF8D);
       border-radius: 24px;
       z-index: -1;
-      animation: spin 2s linear infinite;
+      animation: spin 5s linear infinite;
+    }
+
+    .fit-img {
+      height: 90vh;
+      max-height: 830px;
+      width: auto;
+      max-width: 100%;
+      display: block;
+      object-fit: contain;
+      z-index: 1;
+    }
+
+    .img-wrapper {
+      height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     @keyframes spin {
@@ -208,32 +219,83 @@
       margin-top: 10px;
     }
 
+    /* Custom Scrollbar */
+    .custom-scrollbar {
+      position: absolute;
+      right: 16px;
+      top: 35%;
+      width: 12px;
+      height: calc(100% - 20px);
+      display: flex;
+      justify-content: center;
+      padding: 4px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: width 0.3s;
+      height: 200px;
+      border: 1px solid rgba(255, 255, 255, 0.50);
+    }
+
+    .scrollbar-thumb {
+      position: absolute;
+      width: 8px;
+      margin: 2px 0;
+      background: rgba(255, 255, 255, 0.70);
+      border-radius: 10px;
+      cursor: grab;
+      transition: background 0.3s;
+    }
+
     @media only screen and (max-width: 640px) {
       .main-wrapper {
-        height: 100%;
+        height: 100vh;
+        align-items: start;
+      }
+
+      .fit-img {
+        height: auto;
+        width: 100%;
       }
 
       .frame-wrapper {
         background-image: none;
       }
 
+      .img-wrapper {
+        display: none;
+      }
+
       .inner-page {
         position: static;
-        height: 100%;
-        transform: none !important;
+        height: auto;
+        transform: none;
         border-radius: 0;
+        width: 100%;
+        aspect-ratio: unset;
+        max-height: 100%;
+        max-width: 360px;
+      }
+
+      #customScrollbar {
+        display: none;
       }
     }
   </style>
+
 </head>
 
 <body width="100%"
   style="font-family: 'Lora', Arial, sans-serif ; margin: 0; padding: 0 !important; mso-line-height-rule: exactly;">
   <div class="main-wrapper">
     <!-- frame wrapper -->
-    <div class="frame-wrapper">
+    <div class="frame-wrapper scroll-wrapper">
+      <div class="img-wrapper">
+        <img src="/image/titanium-frame.png" class="fit-img" alt="frame" />
+      </div>
+
       <!-- inner page -->
-      <div class="inner-page">
+      <div class="inner-page content" id="content">
         <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
           style="margin: auto;">
 
@@ -247,7 +309,7 @@
                     <table border="0" cellpadding="0" cellspacing="0" role="presentation">
                       <tr>
                         <td valign="middle" style="padding-right: 8px;">
-                          <img src="/image/logo.png" alt="Logo"
+                          <img src="/image/LOGO_Cross Conncet_Icon.png" alt="Logo"
                             style="width: 32px; height: auto; display: block; vertical-align: middle;" />
                         </td>
                         <td valign="middle">
@@ -281,7 +343,7 @@
               <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
                 style="margin: auto;">
                 <tr>
-                  <td>
+                  <td align="center">
                     <h3
                       style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 24px; font-weight: 400; line-height: 28px; color: #181818; vertical-align: middle; padding-bottom: 8px; margin: 0;">
                       Faith, Finally Within Reach</h3>
@@ -294,7 +356,7 @@
                 <tr>
                   <td align="center">
                     <a href="#"
-                      style="display: inline-block; padding: 8px 16px; border-radius: 24px; border: 1px solid #647D74; background-color: #FFF; text-decoration: none; color: #647D74; font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 14px; font-weight: 700; line-height: 18px; letter-spacing: 0.14px;">
+                      style="width: 100%; max-width: 134px; display: inline-block; padding: 8px 16px; border-radius: 24px; border: 1px solid #647D74; background-color: #FFF; text-decoration: none; color: #647D74; font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 14px; font-weight: 700; line-height: 18px; letter-spacing: 0.14px;">
                       Install App
                     </a>
                   </td>
@@ -328,8 +390,6 @@
                         <p class="footer-text">Want to know more about this verse</p>
                       </div>
                     </div>
-                    <!-- <img src="/image/verse_microsite.png" width="328" height="auto" alt="User"
-                        style="display: block; vertical-align: middle;" /> -->
                   </td>
                 </tr>
               </table>
@@ -344,7 +404,7 @@
           <!-- section-4 -->
           <tr>
             <td valign="top"
-              style="box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); padding: 20px 16px; border-radius: 12px;">
+              style="box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); padding: 20px 22px; border-radius: 12px;">
               <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
                 style="margin: auto;">
                 <tr>
@@ -363,14 +423,14 @@
                       <tr>
                         <td valign="middle" width="50%">
                           <a href="#" style="display: block;">
-                            <img src="/image/google-play.png" width="134" height="auto" alt="play store"
+                            <img src="/image/google-play.png" width="134px" height="auto" alt="play store"
                               style="display: block; vertical-align: middle;" />
                           </a>
 
                         </td>
                         <td valign="middle" width="50%" align="right">
                           <a href="#" style="display: block;">
-                            <img src="/image/apple-app-store.png" width="134" height="auto" alt="app store"
+                            <img src="/image/apple-app-store.png" width="134px" height="auto" alt="app store"
                               style="display: block; vertical-align: middle;" />
                           </a>
                         </td>
@@ -442,7 +502,6 @@
                             creating a richer, more intuitive journaling experience than ever before!
                           </p>
                         </td>
-
                       </tr>
                     </table>
                   </td>
@@ -455,7 +514,7 @@
                         <td valign="middle" align="center" style="padding: 0 20px">
                           <h3
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
-                            Personalized Cards Grow
+                            Personalized Cards Grow<br />
                             As You Do</h3>
                           <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_04.png"
                             alt="Smart Journaling Experience"
@@ -481,7 +540,7 @@
                           <h3
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
                             Explore The Bible</h3>
-                          <img src="/image/expore-the-bible.png" alt="Explore The Bible"
+                          <img src="/image/explore-the-bible2.png" alt="Explore The Bible"
                             style="width: 248px; height: auto;display: block; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
                           <p
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
@@ -654,8 +713,83 @@
           </tr>
         </table>
       </div>
+
+      <!-- custom scrollbar -->
+      <div class="custom-scrollbar" id="customScrollbar">
+        <div class="scrollbar-thumb" id="scrollbarThumb"></div>
+      </div>
+
     </div>
   </div>
+
+  <script>
+    const content = document.getElementById('content');
+    const scrollbar = document.getElementById('customScrollbar');
+    const thumb = document.getElementById('scrollbarThumb');
+
+    let isDragging = false;
+    let startY = 0;
+    let startScrollTop = 0;
+
+    function updateScrollbar() {
+      const scrollHeight = content.scrollHeight;
+      const clientHeight = content.clientHeight;
+      const scrollTop = content.scrollTop;
+
+      // Calculate thumb height
+      const thumbHeight = (clientHeight / scrollHeight) * scrollbar.clientHeight;
+      thumb.style.height = thumbHeight + 'px';
+
+      // Calculate thumb position
+      const thumbTop = (scrollTop / scrollHeight) * scrollbar.clientHeight;
+      thumb.style.top = thumbTop + 'px';
+    }
+
+    // Update scrollbar on content scroll
+    content.addEventListener('scroll', updateScrollbar);
+
+    // Thumb drag functionality
+    thumb.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      startScrollTop = content.scrollTop;
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      const deltaY = e.clientY - startY;
+      const scrollHeight = content.scrollHeight;
+      const clientHeight = content.clientHeight;
+      const scrollbarHeight = scrollbar.clientHeight;
+
+      const scrollDelta = (deltaY / scrollbarHeight) * scrollHeight;
+      content.scrollTop = startScrollTop + scrollDelta;
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    // Click on scrollbar track to jump
+    scrollbar.addEventListener('click', (e) => {
+      if (e.target === thumb) return;
+
+      const rect = scrollbar.getBoundingClientRect();
+      const clickY = e.clientY - rect.top;
+      const scrollbarHeight = scrollbar.clientHeight;
+      const scrollHeight = content.scrollHeight;
+
+      content.scrollTop = (clickY / scrollbarHeight) * scrollHeight;
+    });
+
+    // Initialize scrollbar
+    updateScrollbar();
+
+    // Update on window resize
+    window.addEventListener('resize', updateScrollbar);
+  </script>
 </body>
 
 </html>

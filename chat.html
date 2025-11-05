@@ -8,8 +8,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
-        rel="stylesheet">
+    rel="stylesheet">
   <style>
+    :root {
+      --frame-h: 90vh;
+      --frame-ratio: 9 / 20;
+    }
+
     /* Basic reset */
     *,
     *::after,
@@ -50,74 +55,100 @@
       text-decoration: none;
     }
 
+    /* custom classes */
     .main-wrapper {
       width: 100%;
       height: 100vh;
-      min-height: 778px;
       background: linear-gradient(140deg, #617E93, #E1BDA7);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .fit-img {
+      height: 90vh;
+      max-height: 830px;
+      width: auto;
+      max-width: 100%;
+      display: block;
+      object-fit: contain;
+      z-index: 1;
+    }
+
+    .img-wrapper {
+      height: 90vh;
+      max-height: 830px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: relative;
     }
 
     .inner-page {
-      min-width: 358px;
-      max-width: 360px;
-      background-color: #FFF;
-      margin: 0 auto;
-      padding: 20px 16px 32px;
-      height: 778px;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      border-radius: 53px;
       position: absolute;
       top: 49.8%;
       left: 50%;
       transform: translate(-50%, -50%);
+      height: 87vh;
+      max-height: 800px;
+      aspect-ratio: 9 / 19.5;
+      width: auto;
+      background: #FFF;
+      border-radius: min(6vh, 58px);
+      padding: 32px 16px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      z-index: 2;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
 
     #backToHome {
       display: none;
       max-width: 360px;
-      padding: 16px 20px;
+      padding: 16px 0;
       position: sticky;
-      top: 45px;
+      top: -34px;
       left: 0;
       right: 0;
       z-index: 10;
       background: #FDFCFA;
       width: 100%;
-      border-top-left-radius: 52px;
-      border-top-right-radius: 52px;
+      border-top-left-radius: 2vh;
+      border-top-right-radius: 2vh;
+      box-shadow: 0 2px 4px rgba(91, 114, 106, 0.08);
     }
 
     .chat {
-      position: fixed;
-      bottom: 48px;
+      position: absolute;
+      bottom: 15px;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
       max-width: 360px;
       z-index: 1000;
-      padding: 12px 0 16px;
+      padding: 12px 16px 30px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, #FFF 88.18%);
-      border-bottom-left-radius: 50px;
-      border-bottom-right-radius: 50px;
+      border-bottom-left-radius: 5vh;
+      border-bottom-right-radius: 5vh;
     }
 
-    #popup .popup-inner {
-      position: fixed;
-      bottom: 48px;
+    .popup-inner {
+      position: absolute;
+      bottom: 15px;
       left: 50%;
       transform: translateX(-50%);
       width: calc(100% - 32px);
-      max-width: 360px;
+      max-width: 362px;
       background: linear-gradient(180deg, rgba(184, 195, 191, 0.00) 0%, #B8C3BF 100%);
       backdrop-filter: blur(4px);
-      padding: 32px 30px;
+      padding: 32px 16px;
       text-align: center;
-      border-bottom-left-radius: 50px;
-      border-bottom-right-radius: 50px;
+      border-bottom-left-radius: min(5vh, 58px);
+      border-bottom-right-radius: min(5vh, 58px);
+      z-index: 9999;
     }
 
     /* Chrome / Safari */
@@ -126,13 +157,52 @@
     }
 
     .frame-wrapper {
-      background-image: url('/image/titanium-frame.png');
-      background-position: center;
-      background-attachment: scroll;
-      background-repeat: no-repeat;
-      height: 100%;
-      min-height: 778px;
       position: relative;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar {
+      position: fixed;
+      right: 16px;
+      top: 35%;
+      width: 12px;
+      height: calc(100% - 20px);
+      display: flex;
+      justify-content: center;
+      padding: 4px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: width 0.3s;
+      height: 200px;
+      border: 1px solid rgba(255, 255, 255, 0.50);
+    }
+
+    .scrollbar-thumb {
+      position: absolute;
+      width: 8px;
+      margin: 2px 0;
+      background: rgba(255, 255, 255, 0.70);
+      border-radius: 10px;
+      cursor: grab;
+      transition: background 0.3s;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(102, 126, 234, 0.5);
+      font-size: 14px;
+      font-weight: 600;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .scroll-indicator.show {
+      opacity: 1;
     }
 
     @media only screen and (max-width: 640px) {
@@ -140,20 +210,32 @@
         height: 100%;
       }
 
+      .fit-img {
+        height: auto;
+        width: 100%;
+      }
+
       .frame-wrapper {
         background-image: none;
       }
 
+      .img-wrapper {
+        display: none;
+      }
+
       .inner-page {
         position: static;
-        height: 100%;
-        transform: none !important;
+        height: 100vh;
+        transform: none;
         border-radius: 0;
-        padding: 0 16px 32px;
+        width: 100%;
+        max-width: 360px;
+        max-height: 100vh;
+        aspect-ratio: unset;
       }
 
       .chat,
-      #popup .popup-inner {
+      .popup-inner {
         bottom: 0;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
@@ -165,8 +247,321 @@
         border-top-right-radius: 0;
         padding: 10px 16px;
       }
+
+      #customScrollbar {
+        display: none;
+      }
+
+    }
+
+    @media only screen and (max-width: 392px) {
+      .popup-inner {
+        width: 100%;
+      }
     }
   </style>
+</head>
+
+<body width="100%"
+  style="font-family: 'Lora', Arial, sans-serif ; margin: 0; padding: 0 !important; mso-line-height-rule: exactly;">
+  <center class="main-wrapper">
+    <div class="frame-wrapper scroll-wrapper">
+
+
+      <div class="img-wrapper">
+        <img src="/image/titanium-frame.png" class="fit-img" alt="frame" />
+      </div>
+
+      <div class="inner-page content" id="content">
+        <!-- back -->
+        <div id="backToHome">
+          <button type="button" style="cursor: pointer; border: none; background: none; margin-right: auto;"
+            onclick="if (document.referrer) { history.back(); } else { window.location.href = '/'; }">
+            <img src="/image/angle-left.png" alt="Left angle"
+              style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
+            <span
+              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle;">
+              Go Home
+            </span>
+          </button>
+        </div>
+        <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+          style="margin: auto;">
+
+          <!-- section-1 -->
+          <tr>
+            <td align="center" valign="top">
+              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                style="margin: auto;">
+                <tr>
+                  <td width="25%" valign="middle" style="padding: 4px 0;">
+                    <a href="/" style="display: inline-block;">
+                      <img src="/image/LOGO_Cross Conncet_Icon.png" alt="Logo"
+                        style="width: 32px; height: auto; display: block; vertical-align: middle;" />
+                    </a>
+                  </td>
+                  <td width="25%" valign="middle" align="center">
+                    <div style="padding-bottom: 2px;">
+                      <img src="/image/chat-with-pete-black.png" alt="Chat with Pete"
+                        style="width: 16px; height: auto; display: inline-block; vertical-align: middle; padding-right: 4px;" />
+                      <span
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                        Pete
+                      </span>
+                    </div>
+                    <p id="todaysDate"
+                      style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 16px; letter-spacing: 0.12px; color: #606161; display: inline-block; vertical-align: middle; margin: 0;">
+                    </p>
+                  </td>
+                  <td width="25%" align="right" valign="middle" style="padding: 4px 0;">
+                    <a href="#"
+                      style="display: inline-block; padding: 4px 10px; border-radius: 24px; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); background-color: #647D74; text-decoration: none; color: #fff; font-family: 'Lora', Arial, san-serif; font-size: 12px; font-weight: 700; line-height: 16px; letter-spacing: 0.12px;">
+                      Free Trial
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 20px"></td>
+          </tr>
+
+          <!-- section-2 -->
+          <tr>
+            <td valign="top" style="padding: 10px 0;">
+              <button type="button" id="back" style="cursor: pointer; border: none;"
+                onclick="if (document.referrer) { history.back(); } else { window.location.href = '/'; }">
+                <img src="/image/angle-left.png" alt="Left angle"
+                  style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
+                <span
+                  style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                  Go Home
+                </span>
+              </button>
+            </td>
+          </tr>
+
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 16px"></td>
+          </tr>
+
+          <!-- section-3 -->
+          <tr>
+            <td valign="top"
+              style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+              <p
+                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                Hi My name is Pete and I’m here to help you with your spiritual journey.
+              </p>
+            </td>
+          </tr>
+
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 16px"></td>
+          </tr>
+
+          <!-- section-4 -->
+          <tr>
+            <td>
+              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                style="margin: auto;">
+                <tr>
+                  <td width="10%"></td>
+                  <td width="90%" valign="top"
+                    style="padding: 12px; background-color: #F3EBE0; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+                    <p
+                      style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                      Pete, can you tell me more about the Verse John 3:16?
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 16px"></td>
+          </tr>
+
+          <!-- section-5 -->
+          <tr>
+            <td>
+              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                style="margin: auto;">
+                <tr>
+                  <td align="right" style="padding: 8px 8px 0 0;">
+                    <div style="position: relative; display: inline-block; width: 100%;">
+                      <span
+                        style="position: absolute; top: -7px; right: -14px; font-size: 20px; color: #282929; line-height: 18px; text-decoration: none; padding: 0 4px; border: 1px solid #F2ECE9; border-radius: 13px; background: #fff;">⋯</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr id="response">
+                  <td
+                    style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+                    <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                      style="margin: auto;" class="after-content-exists">
+                      <tr>
+                        <td valign="top" style="padding-bottom: 16px;">
+                          <p
+                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                            I’m glad you reached out. Healing takes strength, and God cares deeply about restoring the
+                            bond
+                            between
+                            parent and child Let’s bring this to Him together.
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p
+                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                            You can read some <strong>verses</strong> that speak directly to your heart right now:
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding: 8px 0;">
+                          <div class="after-content-exists">
+                            <img src="/image/Bible_24x24.png" alt="Bible"
+                              style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 8px;" />
+                            <span
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                              Verses
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding-bottom: 16px;">
+                          <ul
+                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 600; line-height: 20px; color: #181818; padding-left: 20px; margin: 0;">
+                            <li class="after-content-exists" style="font-style: italic; padding-bottom: 8px;">
+                              <span style="text-decoration: underline; font-weight: 700;">Ephesians 4:2</span> - "Be
+                              completely humble and gentle; be patient, bearing
+                              with one another in
+                              love. Make every effort to keep the unity of the Spirit through the bond of peace."
+                            </li>
+                            <li class="after-content-exists" style="font-style: italic;"><span style="text-decoration: underline; font-weight: 700;">Colossians
+                                3:13</span> - "Bear
+                              with each other and forgive one another... And over all these virtues put on love, which
+                              binds them all together in perfect unity."</li>
+                          </ul>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td valign="top" style="padding-bottom: 16px;">
+                          <p
+                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                            When we choose humility, patience, and forgiveness—even when it's hard—we create space for
+                            peace to grow. Love is the glue that holds everything together. And sometimes, just a gentle
+                            word can turn a whole situation around.
+                          </p>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td valign="top">
+                          <p
+                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                            Would you like to pause and pray with me?
+                          </p>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td valign="top" style="padding: 8px 0;">
+                          <div class="after-content-exists">
+                            <img src="/image/prayer_24x24.png" alt="Prayer"
+                              style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 8px;" />
+                            <span
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                              Prayer
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td valign="top">
+                          <p
+                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                            Heavenly Father, <br />You are the God of peace and restoration. I bring You the tension in
+                            my
+                            relationship with my daughter. Help me to lead with love, to speak gently, and to listen
+                            with
+                            humility. Soften our hearts toward one another. Let peace take root where hurt once stood.
+                            Heal what’s broken, and help us move forward in grace. Amen.
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- spacer -->
+          <tr>
+            <td style="padding-bottom: 40px"></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- chat -->
+      <div class="chat">
+        <button type="button" id="openPopup"
+          style="font-family: 'Lora', Georgia, serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #606161; background: none; border: 1px solid #839790; width: 100%; cursor: pointer; padding: 0; text-align: left; max-width: 328px; background-color: #fff; padding: 12px 16px; border-radius: 12px;">
+          Let's Chat...
+        </button>
+      </div>
+
+      <!-- popup -->
+      <div class="popup-inner" id="popup">
+
+        <div
+          style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+          <img src="/image/cross-connect.png" style="width: 48px; height: auto; display: inline-block;"
+            alt="cross connect" />
+        </div>
+
+        <p
+          style="font-size: 18px; font-weight: 700; color: #181818; line-height: 22px; margin: 0 0 12px 0; letter-spacing: 0.18px;">
+          Continue the conversation in <br /> our full app.
+        </p>
+
+        <p style="font-size: 16px; color: #1F2020; line-height: 20px; margin: 0 0 24px 0;">
+          Short description with key features.
+        </p>
+
+        <div style="display: flex; gap: 8px; justify-content: center;">
+          <a href="#"
+            style="padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: transparent; letter-spacing: 0.14px; color: #647D74; border: 2px solid #647D74;">
+            Explore features
+          </a>
+
+          <a href="#"
+            style="padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: #647D74; letter-spacing: 0.14px; color: #ffffff; border: 2px solid transparent;">
+            Download App
+          </a>
+        </div>
+      </div>
+
+      <!-- custom scrollbar -->
+      <div class="custom-scrollbar" id="customScrollbar">
+        <div class="scrollbar-thumb" id="scrollbarThumb"></div>
+      </div>
+
+    </div>
+  </center>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       // Add style to hide after-content-exists elements by default
@@ -186,25 +581,25 @@
 
       const openButton = document.getElementById('openPopup');
       const popup = document.getElementById('popup');
+      const innerPage = document.querySelector('.inner-page');
       const backToHomeBtn = document.getElementById('backToHome');
 
       // Hide popup initially
       popup.style.display = 'none';
 
       // Rest of your existing event listeners
-      openButton.addEventListener('click', function () {
+      openButton.addEventListener('click', function (e) {
+        e.stopPropagation();
         popup.style.display = 'block';
       });
 
-      popup.addEventListener('click', function (event) {
-        if (event.target === popup) {
+      innerPage.addEventListener('click', function (event) {
+        if (!popupInner.contains(event.target)) {
           popup.style.display = 'none';
         }
       });
 
       // const backToHomeBtn = document.getElementById('backToHome');
-      const innerPage = document.querySelector('.inner-page');
-
       function handleScroll(scrollTop) {
         if (scrollTop >= 127) {
           backToHomeBtn.style.display = 'flex';
@@ -248,6 +643,7 @@
 
       const responseContainer = document.getElementById('response');
       const originalContent = responseContainer.innerHTML;
+      const popupInner = document.querySelector('.popup-inner');
 
       // Function to extract text content from HTML elements
       function extractTextNodes(element, texts = []) {
@@ -334,296 +730,94 @@
         typeText(textNodes);
       }, 500);
 
-      // Rest of your existing code...
+      // today's date
+      const d = new Date();
+      const formattedDate = d.toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" });
+      document.getElementById('todaysDate').innerHTML = formattedDate;
+
+      const frame = document.querySelector('.fit-img');
+      const chat = document.querySelector('.chat');
+
+      function syncChatWidth() {
+        const frameWidth = frame.clientWidth;
+        chat.style.width = `${frameWidth - 27}px`;
+        popupInner.style.width = `${frameWidth - 27}px`;
+      }
+
+      window.addEventListener('load', syncChatWidth);
+      window.addEventListener('resize', syncChatWidth);
+
+      // custom scroll bar
+      const content = document.getElementById('content');
+      const scrollbar = document.getElementById('customScrollbar');
+      const thumb = document.getElementById('scrollbarThumb');
+
+      let isDragging = false;
+      let startY = 0;
+      let startScrollTop = 0;
+
+      function updateScrollbar() {
+        const scrollHeight = content.scrollHeight;
+        const clientHeight = content.clientHeight;
+        const scrollTop = content.scrollTop;
+
+        // Calculate thumb height
+        const thumbHeight = (clientHeight / scrollHeight) * scrollbar.clientHeight;
+        thumb.style.height = thumbHeight + 'px';
+
+        // Calculate thumb position
+        const thumbTop = (scrollTop / scrollHeight) * scrollbar.clientHeight;
+        thumb.style.top = thumbTop + 'px';
+
+      }
+
+      // Update scrollbar on content scroll
+      content.addEventListener('scroll', updateScrollbar);
+
+      // Thumb drag functionality
+      thumb.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startY = e.clientY;
+        startScrollTop = content.scrollTop;
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const deltaY = e.clientY - startY;
+        const scrollHeight = content.scrollHeight;
+        const clientHeight = content.clientHeight;
+        const scrollbarHeight = scrollbar.clientHeight;
+
+        const scrollDelta = (deltaY / scrollbarHeight) * scrollHeight;
+        content.scrollTop = startScrollTop + scrollDelta;
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+
+      // Click on scrollbar track to jump
+      scrollbar.addEventListener('click', (e) => {
+        if (e.target === thumb) return;
+
+        const rect = scrollbar.getBoundingClientRect();
+        const clickY = e.clientY - rect.top;
+        const scrollbarHeight = scrollbar.clientHeight;
+        const scrollHeight = content.scrollHeight;
+
+        content.scrollTop = (clickY / scrollbarHeight) * scrollHeight;
+      });
+
+      // Initialize scrollbar
+      updateScrollbar();
+
+      // Update on window resize
+      window.addEventListener('resize', updateScrollbar);
+
     });
   </script>
-</head>
-
-<body width="100%"
-      style="font-family: 'Lora', Arial, sans-serif ; margin: 0; padding: 0 !important; mso-line-height-rule: exactly;">
-<center class="main-wrapper">
-  <div class="frame-wrapper">
-    <!-- back -->
-    <div id="backToHome">
-      <button type="button" style="cursor: pointer; border: none; background: none; margin-right: auto;"
-              onclick="if (document.referrer) { history.back(); } else { window.location.href = '/'; }">
-        <img src="/image/angle-left.png" alt="Left angle"
-             style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
-        <span
-                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle;">
-            Go Home
-          </span>
-      </button>
-    </div>
-    <div class="inner-page">
-      <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-             style="margin: auto;">
-
-        <!-- section-1 -->
-        <tr>
-          <td align="center" valign="top">
-            <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                   style="margin: auto;">
-              <tr>
-                <td width="25%" valign="middle" style="padding: 4px 0;">
-                  <img src="/image/logo.png" alt="Logo"
-                       style="width: 32px; height: auto; display: block; vertical-align: middle;" />
-                </td>
-                <td width="25%" valign="middle" align="center">
-                  <div style="padding-bottom: 2px;">
-                    <img src="/image/chat-with-pete-black.png" alt="Chat with Pete"
-                         style="width: 16px; height: auto; display: inline-block; vertical-align: middle; padding-right: 4px;" />
-                    <span
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                        Pete
-                      </span>
-                  </div>
-                  <p
-                          style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 16px; letter-spacing: 0.12px; color: #606161; display: inline-block; vertical-align: middle; margin: 0;">
-                    Apr 03, 2025
-                  </p>
-                </td>
-                <td width="25%" align="right" valign="middle" style="padding: 4px 0;">
-                  <a href="#"
-                     style="display: inline-block; padding: 4px 10px; border-radius: 24px; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); background-color: #647D74; text-decoration: none; color: #fff; font-family: 'Lora', Arial, san-serif; font-size: 12px; font-weight: 700; line-height: 16px; letter-spacing: 0.12px;">
-                    Free Trial
-                  </a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- spacer -->
-        <tr>
-          <td style="padding-bottom: 20px"></td>
-        </tr>
-
-        <!-- section-2 -->
-        <tr>
-          <td valign="top" style="padding: 10px 0;">
-            <button type="button" id="back" style="cursor: pointer; border: none;"
-                    onclick="if (document.referrer) { history.back(); } else { window.location.href = '/'; }">
-              <img src="/image/angle-left.png" alt="Left angle"
-                   style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
-              <span
-                      style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                  Go Home
-                </span>
-            </button>
-          </td>
-        </tr>
-
-        <!-- spacer -->
-        <tr>
-          <td style="padding-bottom: 16px"></td>
-        </tr>
-
-        <!-- section-3 -->
-        <tr>
-          <td valign="top"
-              style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
-            <p
-                    style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-              Hi My name is Pete and I’m here to help you with your spiritual journey.
-            </p>
-          </td>
-        </tr>
-
-        <!-- spacer -->
-        <tr>
-          <td style="padding-bottom: 16px"></td>
-        </tr>
-
-        <!-- section-4 -->
-        <tr>
-          <td>
-            <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                   style="margin: auto;">
-              <tr>
-                <td width="10%"></td>
-                <td width="90%" valign="top"
-                    style="padding: 12px; background-color: #F3EBE0; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
-                  <p
-                          style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                    Pete, can you tell me more about the Verse John 3:16?
-                  </p>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- spacer -->
-        <tr>
-          <td style="padding-bottom: 16px"></td>
-        </tr>
-
-        <!-- section-5 -->
-        <tr>
-          <td>
-            <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                   style="margin: auto;">
-              <tr>
-                <td align="right" style="padding: 8px 8px 0 0;">
-                  <div style="position: relative; display: inline-block; width: 100%;">
-                      <span
-                              style="position: absolute; top: -7px; right: -14px; font-size: 20px; color: #282929; line-height: 18px; text-decoration: none; padding: 0 4px; border: 1px solid #F2ECE9; border-radius: 13px; background: #fff;">⋯</span>
-                  </div>
-                </td>
-              </tr>
-              <tr id="response">
-                <td
-                        style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
-                  <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                         style="margin: auto;" class="after-content-exists">
-                    <tr>
-                      <td valign="top" style="padding-bottom: 16px;">
-                        <p
-                                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                          I’m glad you reached out. Healing takes strength, and God cares deeply about restoring the
-                          bond
-                          between
-                          parent and child Let’s bring this to Him together.
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p
-                                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                          You can read some <strong>verses</strong> that speak directly to your heart right now:
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td valign="top" style="padding: 8px 0;">
-                        <div class="after-content-exists">
-                          <img src="/image/Bible_24x24.png" alt="Bible"
-                               style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 8px;" />
-                          <span
-                                  style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                              Verses
-                            </span>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td valign="top" style="padding-bottom: 16px;">
-                        <ul
-                                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 600; line-height: 20px; color: #181818; padding-left: 20px; margin: 0;">
-                          <li class="after-content-exists" style="font-style: italic; padding-bottom: 8px;"><strong>Ephesians 4:2</strong> - "Be
-                            completely humble and gentle; be patient, bearing
-                            with one another in
-                            love. Make every effort to keep the unity of the Spirit through the bond of peace."</li>
-                          <li class="after-content-exists" style="font-style: italic;"><strong>Colossians 3:13</strong> - "Bear
-                            with each other and forgive one another... And over all these virtues put on love, which
-                            binds them all together in perfect unity."</li>
-
-                        </ul>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td valign="top" style="padding-bottom: 16px;">
-                        <p
-                                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                          When we choose humility, patience, and forgiveness—even when it's hard—we create space for
-                          peace to grow. Love is the glue that holds everything together. And sometimes, just a gentle
-                          word can turn a whole situation around.
-                        </p>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td valign="top">
-                        <p
-                                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                          Would you like to pause and pray with me?
-                        </p>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td valign="top" style="padding: 8px 0;">
-                        <div class="after-content-exists">
-                          <img src="/image/prayer_24x24.png" alt="Prayer"
-                               style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 8px;" />
-                          <span
-                                  style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                              Prayer
-                            </span>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td valign="top">
-                        <p
-                                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                          Heavenly Father, <br />You are the God of peace and restoration. I bring You the tension in
-                          my
-                          relationship with my daughter. Help me to lead with love, to speak gently, and to listen
-                          with
-                          humility. Soften our hearts toward one another. Let peace take root where hurt once stood.
-                          Heal what’s broken, and help us move forward in grace. Amen.
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <!-- spacer -->
-        <tr>
-          <td style="padding-bottom: 40px"></td>
-        </tr>
-      </table>
-    </div>
-    <!-- chat -->
-    <div class="chat">
-      <button type="button" id="openPopup"
-              style="font-family: 'Lora', Georgia, serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #606161; background: none; border: 1px solid #839790; width: 100%; cursor: pointer; padding: 0; text-align: left; max-width: 328px; background-color: #fff; padding: 12px 16px; border-radius: 12px;">
-        Let's Chat...
-      </button>
-    </div>
-
-    <!-- popup -->
-    <div id="popup"
-         style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; background-color: transparent;">
-      <div class="popup-inner">
-
-        <div
-                style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-          <img src="/image/cross-connect.png" style="width: 48px; height: auto; display: inline-block;"
-               alt="cross connect" />
-        </div>
-
-        <p
-                style="font-size: 18px; font-weight: 700; color: #181818; line-height: 22px; margin: 0 0 12px 0; letter-spacing: 0.18px;">
-          Continue the conversation in <br /> our full app.
-        </p>
-
-        <p style="font-size: 16px; color: #1F2020; line-height: 20px; margin: 0 0 24px 0;">
-          Short description with key features.
-        </p>
-
-        <div style="display: flex; gap: 8px; justify-content: center;">
-          <a href="#"
-             style="padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: transparent; letter-spacing: 0.14px; color: #647D74; border: 2px solid #647D74;">
-            Explore features
-          </a>
-
-          <a href="#"
-             style="padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: #647D74; letter-spacing: 0.14px; color: #ffffff; border: 2px solid transparent;">
-            Download App
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</center>
 </body>
+
 </html>
