@@ -155,11 +155,11 @@
       position: relative;
     }
 
-    @property --angle {
+    /* @property --angle {
       syntax: "<angle>";
       initial-value: 0deg;
       inherits: false;
-    }
+    } */
 
     .ask-pete-btn::after {
       --angle: 0deg;
@@ -191,6 +191,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      max-height: 830px;
     }
 
     @keyframes spin {
@@ -287,7 +289,7 @@
 
 <body width="100%"
   style="font-family: 'Lora', Arial, sans-serif ; margin: 0; padding: 0 !important; mso-line-height-rule: exactly;">
-  <div class="main-wrapper">
+  <center class="main-wrapper">
     <!-- frame wrapper -->
     <div class="frame-wrapper scroll-wrapper">
       <div class="img-wrapper">
@@ -423,15 +425,15 @@
                       <tr>
                         <td valign="middle" width="50%">
                           <a href="#" style="display: block;">
-                            <img src="/image/google-play.png" width="134px" height="auto" alt="play store"
-                              style="display: block; vertical-align: middle;" />
+                            <img src="/image/google-play.png" alt="play store"
+                              style="width: 100%; max-width: 134px; height: auto; display: block; vertical-align: middle;" />
                           </a>
 
                         </td>
                         <td valign="middle" width="50%" align="right">
                           <a href="#" style="display: block;">
-                            <img src="/image/apple-app-store.png" width="134px" height="auto" alt="app store"
-                              style="display: block; vertical-align: middle;" />
+                            <img src="/image/apple-app-store.png" alt="app store"
+                              style="width: 100%; max-width: 134px; height: auto; display: block; vertical-align: middle;" />
                           </a>
                         </td>
                       </tr>
@@ -471,7 +473,7 @@
                             Pete - Your Spiritual Guide</h3>
                           <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_01.png"
                             alt="Chat with Pete"
-                            style="display: block; width: 248px; height: auto; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
+                            style="display: block; width: 100%; max-width: 248px; height: auto; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
                           <p
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
                             Meet Pete — the heart of Cross Connect. Think of Pete as a friend who’s always there to
@@ -494,7 +496,7 @@
                             Smart Journaling Experience</h3>
                           <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_02.png"
                             alt="Smart Journaling Experience"
-                            style="width: 248px; height: auto; display: block; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
+                            style="width: 100%; max-width: 248px; height: auto; display: block; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
                           <p
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
                             The world's first automated spiritual journal. As you talk with Pete, your journal builds
@@ -518,7 +520,7 @@
                             As You Do</h3>
                           <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_04.png"
                             alt="Smart Journaling Experience"
-                            style="width: 248px; height: auto; display: block; vertical-align: middle; border: 8px solid rgba(100, 125, 116, 0.10); border-radius: 24px;" />
+                            style="width: 100%; max-width: 248px; height: auto; display: block; vertical-align: middle; border: 8px solid rgba(100, 125, 116, 0.10); border-radius: 24px;" />
                           <p
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
                             These are Personal Conversation Cards — designed for you and the topics Christians wrestle
@@ -541,7 +543,7 @@
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
                             Explore The Bible</h3>
                           <img src="/image/explore-the-bible2.png" alt="Explore The Bible"
-                            style="width: 248px; height: auto;display: block; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
+                            style="width: 100%; max-width: 248px; height: auto;display: block; vertical-align: middle; border: 8px solid rgba(124, 65, 30, 0.10); border-radius: 24px;" />
                           <p
                             style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
                             More than a Bible — an interactive, integrated experience connected with Pete. Ask
@@ -569,7 +571,7 @@
                 <tr>
                   <td align="center">
                     <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_05.png" alt="Cross"
-                      style="width: 124px; height: auto; display:block; width:170px; height:170px; border-radius:12px; object-fit:cover;" />
+                      style="width: 100%; max-width: 124px; height: auto; display:block; border-radius:12px; object-fit:cover;" />
                   </td>
                 </tr>
 
@@ -720,7 +722,7 @@
       </div>
 
     </div>
-  </div>
+  </center>
 
   <script>
     const content = document.getElementById('content');
