@@ -23,21 +23,25 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Determine S3 bucket
+      - name: Determine S3 bucket and CloudFront distribution
         id: s3
         run: |
           case "${GITHUB_REF_NAME}" in
             sandbox)
               echo "bucket=dev-microweb.wisdomwearai.com" >> $GITHUB_OUTPUT
+              echo "cf_dist=d2n7ykleunim90" >> $GITHUB_OUTPUT
               ;;
             staging)
               echo "bucket=stg-microweb.wisdomwearai.com" >> $GITHUB_OUTPUT
+              echo "cf_dist=d1niylwzd1meck" >> $GITHUB_OUTPUT
               ;;
             preprod)
               echo "bucket=preprod-microweb.wisdomwearai.com" >> $GITHUB_OUTPUT
+              echo "cf_dist=d1m6wu67dpk7ij" >> $GITHUB_OUTPUT
               ;;
             main)
               echo "bucket=microweb.wisdomwearai.com" >> $GITHUB_OUTPUT
+              echo "cf_dist=d31a5t918c7duo" >> $GITHUB_OUTPUT
               ;;
             *)
               echo "Unknown branch: ${GITHUB_REF_NAME}"
@@ -52,3 +56,8 @@ jobs:
             --exclude ".github/*" \
             --delete
 
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.s3.outputs.cf_dist }} \
+            --paths "/*"
