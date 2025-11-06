@@ -1,6 +1,79 @@
-[
-  {
-    "human":  "Pete, can you tell me more about the Verse John 3:26?",
-    "ai": "I’m glad you reached out. Healing takes strength, and God cares deeply about restoring the bond between parent and child Let’s bring this to Him together.You can read some verses that speak directly to your heart right now: Bible Verses Let peace take root where hurt once stood. Heal what’s broken, and help us move forward in grace. Amen."
+{
+  "default": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything, we can get started!",
+    "verse": "John 3:16",
+    "content": "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
+    "human": "Hey Pete, why is John 3:16 considered such a big deal?",
+    "ai": "*“For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.”* — John 3:16 (NIV)\nThis verse is the heartbeat of the Gospel. In a single sentence, it captures God’s love, His sacrifice, and the invitation to eternal life. It reminds us that faith isn’t earned—it’s received. No matter where you’ve been or what you’ve done, God’s love is bigger. That’s what makes this verse so powerful: it speaks of a love that reaches all of us, even in our most broken places."
+  },
+  "john-3-16": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything, we can get started!",
+    "verse": "John 3:16",
+    "content": "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
+    "human": "Hey Pete, why is John 3:16 considered such a big deal?",
+    "ai": "*“For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.”* — John 3:16 (NIV)\nThis verse is the heartbeat of the Gospel. In a single sentence, it captures God’s love, His sacrifice, and the invitation to eternal life. It reminds us that faith isn’t earned—it’s received. No matter where you’ve been or what you’ve done, God’s love is bigger. That’s what makes this verse so powerful: it speaks of a love that reaches all of us, even in our most broken places."
+  },
+  "romans-8-28": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything we can get started!",
+    "verse": "Romans 8:28",
+    "content": "And we know that in all things God works for the good of those who love him, who have been called according to his purpose.",
+    "human": "Can you help me understand what Romans 8:28 really means?",
+    "ai": "*“And we know that in all things God works for the good of those who love him, who have been called according to his purpose.”* — Romans 8:28 (NIV)\nThis verse doesn’t promise a pain-free life, but it does promise that nothing is wasted. Even our hardships, failures, and detours are part of a bigger story that God is weaving for good. It’s an invitation to trust that your life—even the messy parts—are still held in God’s hands."
+  },
+  "psalm-23-1": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything we can get started!",
+    "verse": "Psalm 23:1",
+    "content": "The Lord is my shepherd, I lack nothing.",
+    "human": "What’s the deeper meaning behind ‘The Lord is my shepherd’?",
+    "ai": "*“The Lord is my shepherd, I lack nothing.”* — Psalm 23:1 (NIV)\nThis verse speaks of protection, provision, and presence. A shepherd doesn’t just guide; he stays close, watches over, and lays his life down for his sheep. When you feel scattered or unsure, this verse reminds you that you’re not navigating life alone. God is near—and He provides what you need, even when it’s not what you expect."
+  },
+  "proverbs-3-5-6": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything we can get started!",
+    "verse": "Proverbs 3:5–6",
+    "content": "Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.",
+    "human": "Pete, I’m struggling to trust God. What does Proverbs 3:5–6 say about that?",
+    "ai": "*“Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.”* — Proverbs 3:5–6 (NIV)\nThis verse invites surrender. It acknowledges that sometimes, understanding won’t come first—trust will. Submitting to God doesn’t mean giving up your thinking; it means placing your faith above your fears. He doesn’t promise easy roads, but He promises direction. And that’s often what we need most."
+  },
+  "isaiah-41-10": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything, we can get started!",
+    "verse": "Isaiah 41:10",
+    "content": "So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you; I will uphold you with my righteous right hand.",
+    "human": "What’s the significance of Isaiah 41:10? I’ve heard it’s comforting.",
+    "ai": "*“So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you; I will uphold you with my righteous right hand.”* — Isaiah 41:10 (NIV)\nFear has a way of gripping the soul. This verse doesn’t deny fear—it dismantles it with God’s presence. When you feel overwhelmed or alone, this is a verse to hold onto. Not because everything is okay, but because God is—and He is with you."
+  },
+  "matthew-11-28": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything we can get started!",
+    "verse": "Matthew 11:28",
+    "content": "Come to me, all you who are weary and burdened, and I will give you rest.",
+    "human": "Pete, what does it mean when Jesus says to come to Him for rest?",
+    "ai": "*“Come to me, all you who are weary and burdened, and I will give you rest.”* — Matthew 11:28 (NIV)\nThis isn’t rest like sleep—it’s soul-deep relief. Jesus invites the worn-out, the anxious, and the spiritually exhausted to simply come. No performance, no pressure. Just presence. In a noisy, demanding world, this is a verse that brings us back to the center: to Him."
+  },
+  "philippians-4-13": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything we can get started!",
+    "verse": "Philippians 4:13",
+    "content": "I can do all this through him who gives me strength.",
+    "human": "I see Philippians 4:13 quoted a lot. What’s it really saying?",
+    "ai": "*“I can do all this through him who gives me strength.”* — Philippians 4:13 (NIV)\nThis verse isn’t a hype quote—it’s a survival verse. Paul wrote it from prison. It’s not about doing everything—it’s about enduring anything through the strength God gives. When you're stretched thin or pushed to your edge, this is a reminder that you're not doing it alone."
+  },
+  "2-timothy-1-7": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything we can get started!",
+    "verse": "2 Timothy 1:7",
+    "content": "For the Spirit God gave us does not make us timid, but gives us power, love and self-discipline.",
+    "human": "What does it mean that God didn’t give us a spirit of fear?",
+    "ai": "*“For the Spirit God gave us does not make us timid, but gives us power, love and self-discipline.”* — 2 Timothy 1:7 (NIV)\nGod didn’t wire you for fear—He filled you with courage. This verse reminds you that fear may visit, but it doesn’t have to stay. You’ve been given power to stand strong, love to reach others, and the self-discipline to keep showing up. That’s what the Spirit brings."
+  },
+  "jeremiah-29-11": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything we can get started!",
+    "verse": "Jeremiah 29:11",
+    "content": "‘For I know the plans I have for you,’ declares the Lord, ‘plans to prosper you and not to harm you, plans to give you hope and a future.’",
+    "human": "Pete, does God really have a plan for me?",
+    "ai": "*“‘For I know the plans I have for you,’ declares the Lord, ‘plans to prosper you and not to harm you, plans to give you hope and a future.’”* — Jeremiah 29:11 (NIV)\nThis verse was written to people in exile—people who felt forgotten. God reminds them (and us) that even in the waiting, there is a plan. A plan for hope. A future shaped by His goodness. Even when the road is long, you are not lost."
+  },
+  "galatians-5-22-23": {
+    "title": "Welcome. My Name is Pete. I am here to help you on your daily faith Journey. Ask me anything we can get started!",
+    "verse": "Galatians 5:22–23",
+    "content": "But the fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness and self-control.",
+    "human": "Can you break down what the fruit of the Spirit really means?",
+    "ai": "*“But the fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness and self-control.”* — Galatians 5:22–23 (NIV)\nThese aren’t boxes to check—they’re the natural result of walking closely with God. When you invite the Holy Spirit into your life, these qualities grow in you over time. Not perfectly. Not instantly. But day by day. They’re the evidence of a heart shaped by grace."
   }
-]
+}
