@@ -424,15 +424,13 @@
                   <td valign="middle">
                     <div class="card">
                       <div class="card-content">
-                        <p class="quote-text">
-                          <span class="quote">“</span>For God so loved the world, that he gave his only begotten Son,
-                          that whosoever believeth in
-                          him should not perish but have everlasting life.<span class="quote">”</span>
+                        <p class="quote-text" id="verse-content">
+                          <span class="quote">“</span> <span class="quote">”</span>
                         </p>
-                        <p class="verse">John 3:16</p>
-                        <a href="chat.html" class="ask-pete-btn"><img src="/image/chat-with-pete.png"
+                        <p class="verse" id="verse">John 3:16</p>
+                        <a id="chatLink" class="ask-pete-btn"><img src="/image/chat-with-pete.png"
                             class="chat-with-pete" alt="chat with pete" /> Ask Pete</a>
-                        <p class="footer-text">Want to know more about this verse</p>
+                        <p id="more-about" class="footer-text"></p>
                       </div>
                     </div>
                   </td>
@@ -827,6 +825,23 @@
     // Update on window resize
     window.addEventListener('resize', updateScrollbar);
 
+    // Load and display chat content
+    fetch('/chat.json')
+            .then(response => response.json())
+            .then(data => {
+              const urlParams = new URLSearchParams(window.location.search);
+              const tag = urlParams.get('tag');
+              const content = tag && data[tag] ? data[tag] : data.default;
+
+              const verseContent = document.querySelector('#verse-content');
+              const verse = document.querySelector('#verse');
+              const chatLink = document.querySelector('#chatLink');
+              const moreAbout = document.querySelector('#more-about');
+              chatLink.setAttribute('href', `chat.html?tag=${tag}`);
+              verseContent.innerHTML = content.content;
+              verse.innerHTML = content.verse;
+              moreAbout.innerHTML = `Want to know more about this${content.verse? ' verse': '?'}`;
+            });
   </script>
 </body>
 
