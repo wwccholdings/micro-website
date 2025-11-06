@@ -29,19 +29,19 @@ jobs:
           case "${GITHUB_REF_NAME}" in
             sandbox)
               echo "bucket=dev-microweb.wisdomwearai.com" >> $GITHUB_OUTPUT
-              echo "cf_dist=d2n7ykleunim90" >> $GITHUB_OUTPUT
+              echo "cf_dist=E78YLTSAP32DK" >> $GITHUB_OUTPUT
               ;;
             staging)
               echo "bucket=stg-microweb.wisdomwearai.com" >> $GITHUB_OUTPUT
-              echo "cf_dist=d1niylwzd1meck" >> $GITHUB_OUTPUT
+              echo "cf_dist=E13MZYL9UU8QY0" >> $GITHUB_OUTPUT
               ;;
             preprod)
               echo "bucket=preprod-microweb.wisdomwearai.com" >> $GITHUB_OUTPUT
-              echo "cf_dist=d1m6wu67dpk7ij" >> $GITHUB_OUTPUT
+              echo "cf_dist=E11ZBLGT34ZZ50" >> $GITHUB_OUTPUT
               ;;
             main)
               echo "bucket=microweb.wisdomwearai.com" >> $GITHUB_OUTPUT
-              echo "cf_dist=d31a5t918c7duo" >> $GITHUB_OUTPUT
+              echo "cf_dist=E37QAB07CGX5IS" >> $GITHUB_OUTPUT
               ;;
             *)
               echo "Unknown branch: ${GITHUB_REF_NAME}"
