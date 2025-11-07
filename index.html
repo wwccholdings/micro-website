@@ -112,19 +112,59 @@
       z-index: 2;
     }
 
+    .quote-content-wrapper {
+      position: relative;
+    }
+
     .quote-text {
       font-size: 18px;
       color: #fff;
       line-height: 22px;
       letter-spacing: 0.18px;
+      position: relative;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 14;
+      overflow: hidden;
+      white-space: normal;
+      word-break: break-word;
+      hyphens: auto;
+      padding: 0 0.3em;
     }
 
-    .quote-text>span {
+    .quote-text::before {
+      content: '“';
+      margin-right: 3px;
+    }
+
+    .quote-text::after {
+      content: '”';
+      margin-left: 3px;
+    }
+
+    .quote-text::before,
+    .quote-text::after {
+      display: inline-block;
       font-size: 24px;
       color: #fff;
       font-weight: 600;
       line-height: 28px;
       text-shadow: 0 1px 1px rgba(91, 114, 106, 0.40);
+      position: relative;
+      z-index: 1;
+    }
+
+    .ellipsis-end-quote {
+      display: none;
+      position: absolute;
+      right: -2%;
+      bottom: 0;
+      font-size: 24px;
+      color: #fff;
+      font-weight: 600;
+      line-height: 28px;
+      text-shadow: 0 1px 1px rgba(91, 114, 106, 0.40);
+      z-index: 1;
     }
 
     .verse {
@@ -143,7 +183,7 @@
       width: 100%;
       max-width: 134px;
       background-color: #647D74;
-      margin: 0 auto;
+      margin: 10px auto 0;
       padding: 8px 16px;
       border-radius: 24px;
       box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15);
@@ -177,7 +217,7 @@
       animation: spin 3s linear infinite;
     }
 
-    .fit-img {
+    .mobile-frame {
       height: 90vh;
       max-height: 830px;
       width: auto;
@@ -187,7 +227,7 @@
       z-index: 1;
     }
 
-    .img-wrapper {
+    .mobile-frame-wrapper {
       height: 90vh;
       display: flex;
       justify-content: center;
@@ -219,7 +259,7 @@
       font-size: 16px;
       line-height: 20px;
       color: #fff;
-      margin-top: 10px;
+      margin-top: 28px;
     }
 
     /* Custom Scrollbar */
@@ -284,7 +324,7 @@
         align-items: start;
       }
 
-      .fit-img {
+      .mobile-frame {
         height: auto;
         width: 100%;
       }
@@ -293,7 +333,7 @@
         background-image: none;
       }
 
-      .img-wrapper {
+      .mobile-frame-wrapper {
         display: none;
       }
 
@@ -334,8 +374,8 @@
   <center class="main-wrapper">
     <!-- frame wrapper -->
     <div class="frame-wrapper scroll-wrapper">
-      <div class="img-wrapper">
-        <img src="/image/titanium-frame.png" class="fit-img" alt="frame" />
+      <div class="mobile-frame-wrapper">
+        <img src="/image/titanium-frame.png" class="mobile-frame" alt="frame" />
       </div>
 
       <!-- inner page -->
@@ -424,13 +464,15 @@
                   <td valign="middle">
                     <div class="card">
                       <div class="card-content">
-                        <p class="quote-text" id="verse-content">
-                          <span class="quote">“</span> <span class="quote">”</span>
-                        </p>
+                        <div class="quote-content-wrapper">
+                          <p class="quote-text" id="verse-content">
+                          </p>
+                          <span class="ellipsis-end-quote">”</span>
+                        </div>
                         <p class="verse" id="verse">John 3:16</p>
+                        <p id="more-about" class="footer-text"></p>
                         <a id="chatLink" class="ask-pete-btn"><img src="/image/chat-with-pete.png"
                             class="chat-with-pete" alt="chat with pete" /> Ask Pete</a>
-                        <p id="more-about" class="footer-text"></p>
                       </div>
                     </div>
                   </td>
@@ -827,21 +869,49 @@
 
     // Load and display chat content
     fetch('/chat.json')
-            .then(response => response.json())
-            .then(data => {
-              const urlParams = new URLSearchParams(window.location.search);
-              const tag = urlParams.get('tag');
-              const content = tag && data[tag] ? data[tag] : data.default;
+      .then(response => response.json())
+      .then(data => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tag = urlParams.get('tag');
+        const content = tag && data[tag] ? data[tag] : data.default;
 
-              const verseContent = document.querySelector('#verse-content');
-              const verse = document.querySelector('#verse');
-              const chatLink = document.querySelector('#chatLink');
-              const moreAbout = document.querySelector('#more-about');
-              chatLink.setAttribute('href', `chat.html?tag=${tag}`);
-              verseContent.innerHTML = content.content;
-              verse.innerHTML = content.verse;
-              moreAbout.innerHTML = `Want to know more about this${content.verse? ' verse': '?'}`;
-            });
+        const verseContent = document.querySelector('#verse-content');
+        const verse = document.querySelector('#verse');
+        const chatLink = document.querySelector('#chatLink');
+        const moreAbout = document.querySelector('#more-about');
+        chatLink.setAttribute('href', `chat.html?tag=${tag}`);
+        verseContent.innerHTML = content.content;
+        verse.innerHTML = content.verse;
+        moreAbout.innerHTML = `Want to know more about this${content.verse ? ' verse' : '?'}`;
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(updateQuoteDisplay);
+        });
+      });
+
+    // text ellipsis quote mark
+    function updateQuoteDisplay() {
+      const quoteText = document.getElementById('verse-content');
+      const quElement = document.querySelector('.ellipsis-end-quote');
+
+      if (!quoteText || !quElement) return;
+
+      // Get the line height
+      const lineHeight = parseFloat(window.getComputedStyle(quoteText).lineHeight);
+
+      // Get the total height of the content
+      const totalHeight = quoteText.scrollHeight;
+
+      // Calculate number of lines
+      const lineCount = Math.round(totalHeight / lineHeight);
+
+      // Show or hide the 'ellipsis-end-quote' element based on line count
+      if (lineCount >= 14) {
+        quElement.style.display = 'inline'; // or 'block' depending on your layout
+      } else {
+        quElement.style.display = 'none';
+      }
+    }
   </script>
 </body>
 
