@@ -67,7 +67,7 @@
       position: relative;
     }
 
-    .fit-img {
+    .mobile-frame {
       height: 90vh;
       max-height: 830px;
       width: auto;
@@ -193,7 +193,7 @@
         height: 100%;
       }
 
-      .fit-img {
+      .mobile-frame {
         height: auto;
         width: 100%;
       }
@@ -217,13 +217,19 @@
         aspect-ratio: unset;
       }
 
-      .chat,
+      .chat {
+        position: fixed;
+        bottom: 0;
+        padding: 12px 16px 16px;
+      }
+
       .popup-inner {
+        position: fixed;
         bottom: 0;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       }
-      
+
       .popup-inner {
         width: 100% !important;
       }
@@ -254,7 +260,7 @@
   <center class="main-wrapper">
     <div class="frame-wrapper scroll-wrapper">
       <div class="img-wrapper">
-        <img src="/image/titanium-frame.png" class="fit-img" alt="frame" />
+        <img src="/image/titanium-frame.png" class="mobile-frame" alt="frame" />
       </div>
 
       <div class="inner-page content" id="content">
@@ -338,7 +344,8 @@
           <tr>
             <td valign="top"
               style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
-              <p id="title" style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+              <p id="title"
+                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
               </p>
             </td>
           </tr>
@@ -376,14 +383,6 @@
             <td>
               <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
                 style="margin: auto;">
-                <tr>
-                  <td align="right" style="padding: 8px 8px 0 0;">
-                    <div style="position: relative; display: inline-block; width: 100%;">
-                      <span
-                        style="position: absolute; top: -7px; right: -14px; font-size: 20px; color: #282929; line-height: 18px; text-decoration: none; padding: 0 4px; border: 1px solid #F2ECE9; border-radius: 13px; background: #fff;">⋯</span>
-                    </div>
-                  </td>
-                </tr>
                 <tr id="response">
                 </tr>
               </table>
@@ -409,27 +408,20 @@
 
         <div
           style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-          <img src="/image/cross-connect.png" style="width: 48px; height: auto; display: inline-block;"
-            alt="cross connect" />
+          <img src="/image/logo-white-bg.svg" style="width: 48px; height: auto; display: inline-block;" alt="logo" />
         </div>
-
         <p
-          style="font-size: 18px; font-weight: 700; color: #181818; line-height: 22px; margin: 0 0 12px 0; letter-spacing: 0.18px;">
-          Continue the conversation in <br /> our full app.
+          style="font-size: 18px; font-weight: 700; color: #181818; line-height: 22px; margin: 0 0 24px 0; letter-spacing: 0.18px;">
+          Continue the conversation in <br /> our Cross Connect app.
         </p>
-
-        <p style="font-size: 16px; color: #1F2020; line-height: 20px; margin: 0 0 24px 0;">
-          Short description with key features.
-        </p>
-
         <div style="display: flex; gap: 8px; justify-content: center;">
           <a href="#"
-            style="padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: transparent; letter-spacing: 0.14px; color: #647D74; border: 2px solid #647D74;">
+            style="width: 100%; max-width: 150px; padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: transparent; letter-spacing: 0.14px; color: #647D74; border: 2px solid #647D74;">
             Explore features
           </a>
 
           <a href="#"
-            style="padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: #647D74; letter-spacing: 0.14px; color: #ffffff; border: 2px solid transparent;">
+            style="width: 100%; max-width: 150px; padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: #647D74; letter-spacing: 0.14px; color: #ffffff; border: 2px solid transparent;">
             Download App
           </a>
         </div>
@@ -479,58 +471,58 @@
 
       // Load and display chat content
       fetch('/chat.json')
-              .then(response => response.json())
-              .then(data => {
-                const urlParams = new URLSearchParams(window.location.search);
-                const tag = urlParams.get('tag');
-                const content = tag && data[tag] ? data[tag] : data.default;
+        .then(response => response.json())
+        .then(data => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const tag = urlParams.get('tag');
+          const content = tag && data[tag] ? data[tag] : data.default;
 
-                const chatContainer = document.querySelector('#response').parentElement;
-                const title = document.querySelector('#title');
-                const human = document.querySelector('#human');
-                title.innerHTML = content.title;
-                human.innerHTML = content.human;
+          const chatContainer = document.querySelector('#response').parentElement;
+          const title = document.querySelector('#title');
+          const human = document.querySelector('#human');
+          title.innerHTML = content.title;
+          human.innerHTML = content.human;
 
-                let originalContent = createChatMessage(content.ai);
-                // Initialize streaming
-                setTimeout(() => {
-                  const temp = document.createElement('div');
-                  temp.innerHTML = originalContent;
+          let originalContent = createChatMessage(content.ai);
+          // Initialize streaming
+          setTimeout(() => {
+            const temp = document.createElement('div');
+            temp.innerHTML = originalContent;
 
-                  // Save the structure but clear text content
-                  responseContainer.innerHTML = originalContent;
-                  const textNodes = extractTextNodes(responseContainer);
+            // Save the structure but clear text content
+            responseContainer.innerHTML = originalContent;
+            const textNodes = extractTextNodes(responseContainer);
 
-                  // Hide all after-content-exists elements initially
-                  const afterContentElements = responseContainer.getElementsByClassName('after-content-exists');
-                  Array.from(afterContentElements).forEach(element => {
-                    element.classList.remove('show');
-                  });
+            // Hide all after-content-exists elements initially
+            const afterContentElements = responseContainer.getElementsByClassName('after-content-exists');
+            Array.from(afterContentElements).forEach(element => {
+              element.classList.remove('show');
+            });
 
-                  // Clear all text nodes
-                  textNodes.forEach(({ node }) => {
-                    node.textContent = '';
-                  });
+            // Clear all text nodes
+            textNodes.forEach(({ node }) => {
+              node.textContent = '';
+            });
 
-                  // Start typing animation
-                  typeText(textNodes);
-                }, 500);
+            // Start typing animation
+            typeText(textNodes);
+          }, 500);
 
-              })
-              .catch(error => console.error('Error loading chat content:', error));
+        })
+        .catch(error => console.error('Error loading chat content:', error));
 
 
       // Function to convert markdown to HTML
       function markdownToHtml(markdown) {
         // Basic markdown conversion - expand as needed
         return markdown
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
-                .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
-                .replace(/\n\n/g, '</p><p>') // Paragraphs
-                .replace(/\n/g, '<br>') // Line breaks
-                .replace(/#{3} (.*)/g, '<h3>$1</h3>') // H3
-                .replace(/#{2} (.*)/g, '<h2>$1</h2>') // H2
-                .replace(/#{1} (.*)/g, '<h1>$1</h1>'); // H1
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+          .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
+          .replace(/\n\n/g, '</p><p>') // Paragraphs
+          .replace(/\n/g, '<br>') // Line breaks
+          .replace(/#{3} (.*)/g, '<h3>$1</h3>') // H3
+          .replace(/#{2} (.*)/g, '<h2>$1</h2>') // H2
+          .replace(/#{1} (.*)/g, '<h1>$1</h1>'); // H1
       }
       const openButton = document.getElementById('openPopup');
       const popup = document.getElementById('popup');
@@ -663,7 +655,7 @@
       const formattedDate = d.toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" });
       document.getElementById('todaysDate').innerHTML = formattedDate;
 
-      const frame = document.querySelector('.fit-img');
+      const frame = document.querySelector('.mobile-frame');
       const chat = document.querySelector('.chat');
 
       function syncChatWidth() {
