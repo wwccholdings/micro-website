@@ -12,6 +12,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/image/favicon.png">
   <style>
     /* Basic reset */
+    :root {
+      --frame-h: 90vh;
+      --frame-ratio: 9 / 20;
+    }
+
     *,
     *::after,
     *::before {
@@ -44,7 +49,8 @@
     }
 
     button {
-      border: none !important;
+      border: none;
+      cursor: pointer;
     }
 
     a {
@@ -194,6 +200,7 @@
       text-decoration: none;
       transition: all 0.3s ease;
       position: relative;
+      cursor: pointer;
     }
 
     @property --angle {
@@ -318,8 +325,151 @@
       align-items: center;
     }
 
+    .page {
+      position: absolute;
+      width: 100%;
+      min-height: 100%;
+      background: #fff;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      /* overflow-y: auto;
+      padding: 32px 16px; */
+    }
+
+    .page.active {
+      transform: translateX(0);
+      z-index: 2;
+    }
+
+    .page.left {
+      transform: translateX(-100%);
+      z-index: 1;
+    }
+
+    .page.right {
+      transform: translateX(100%);
+      z-index: 1;
+    }
+
+    #backToHome {
+      display: none;
+      max-width: 360px;
+      padding: 16px 0;
+      position: sticky;
+      top: -34px;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: #FDFCFA;
+      width: 100%;
+      border-top-left-radius: 2vh;
+      border-top-right-radius: 2vh;
+      box-shadow: 0 2px 4px rgba(91, 114, 106, 0.08);
+    }
+
+    .chat {
+      display: none;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 8%);
+      z-index: 1000;
+      padding: 12px 16px 30px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, #FFF 88.18%);
+      border-bottom-left-radius: 6vh;
+      border-bottom-right-radius: 6vh;
+    }
+
+    .popup-inner {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-40%);
+      opacity: 0;
+      visibility: hidden;
+      z-index: -1;
+      width: calc(100% - 34px);
+      background: linear-gradient(180deg, rgba(184, 195, 191, 0.00) 0%, #B8C3BF 100%);
+      backdrop-filter: blur(4px);
+      padding: 32px 16px;
+      text-align: center;
+      border-bottom-left-radius: min(6vh, 58px);
+      border-bottom-right-radius: min(6vh, 58px);
+      transition: all 0.3s ease;
+    }
+
+    .popup-inner.show {
+      transform: translateX(-50%);
+      opacity: 1;
+      visibility: visible;
+      z-index: 9999;
+
+    }
+
+    .popup-inner {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translate(-50%, 1%);
+      opacity: 0;
+      visibility: hidden;
+      z-index: -1;
+      background: linear-gradient(180deg, rgba(184, 195, 191, 0.00) 0%, #B8C3BF 100%);
+      width: calc(100% - 32px);
+      backdrop-filter: blur(4px);
+      padding: 32px 16px;
+      text-align: center;
+      border-bottom-left-radius: min(6vh, 58px);
+      border-bottom-right-radius: min(6vh, 58px);
+      transition: all 0.3s ease;
+    }
+
+    .popup-inner.show {
+      transform: translate(-50%, 0%);
+      opacity: 1;
+      visibility: visible;
+      z-index: 9999;
+    }
+
+    .frame-wrapper {
+      position: relative;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar {
+      position: fixed;
+      right: 16px;
+      top: 35%;
+      width: 12px;
+      height: calc(100% - 20px);
+      display: flex;
+      justify-content: center;
+      padding: 4px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: width 0.3s;
+      height: 200px;
+      border: 1px solid rgba(255, 255, 255, 0.50);
+    }
+
+    .scrollbar-thumb {
+      position: absolute;
+      width: 8px;
+      margin: 2px 0;
+      background: rgba(255, 255, 255, 0.70);
+      border-radius: 10px;
+      cursor: grab;
+      transition: background 0.3s;
+    }
+
+    #chat {
+      padding: 20px 16px;
+    }
+
     @media only screen and (max-width: 640px) {
       .main-wrapper {
+        background: #FDFCFA;
         height: 100%;
         align-items: start;
       }
@@ -339,14 +489,18 @@
 
       .inner-page {
         position: static;
-        height: auto;
+        height: 100vh;
         transform: none;
         border-radius: 0;
-        width: 100%;
+        width: 100vw;
         aspect-ratio: unset;
         max-height: 100%;
         padding: 6px 0 32px !important;
-        /* max-width: 360px; */
+        overflow-y: visible;
+      }
+
+      .page {
+        min-height: auto !important;
       }
 
       #customScrollbar {
@@ -361,8 +515,49 @@
         padding: 8px 16px 4px !important;
       }
 
-      .inner-page {
-        overflow-y: visible;
+      .main-wrapper {
+        overflow-x: hidden;
+      }
+
+      .img-wrapper {
+        display: none;
+      }
+
+      .chat {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        padding: 12px 16px 16px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .popup-inner {
+        position: fixed;
+        bottom: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .popup-inner {
+        width: 100% !important;
+      }
+
+      #backToHome {
+        top: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        padding: 10px 16px;
+      }
+
+      #customScrollbar {
+        display: none;
+      }
+    }
+
+    @media only screen and (max-width: 392px) {
+      .popup-inner {
+        width: 100%;
       }
     }
   </style>
@@ -380,415 +575,581 @@
 
       <!-- inner page -->
       <div class="inner-page content" id="content">
-        <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-          style="margin: auto;">
 
-          <!-- section-1 -->
-          <tr>
-            <td align="center" valign="top" style="position: sticky; top: -6px;
+        <!-- home page -->
+        <div class="page active" id="home">
+          <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+            style="margin: auto; padding-bottom: 30px;">
+
+            <!-- section-1 -->
+            <tr>
+              <td align="center" valign="top" style="position: sticky; top: -6px;
             background-color: #FDFCFA; z-index: 9999; width: 100%; padding: 33px 16px 4px;" id="top-nav">
-              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                style="margin: auto;">
-                <tr>
-                  <td width="50%" valign="middle" style="padding: 4px 0; cursor: pointer;">
-                    <table border="0" cellpadding="0" cellspacing="0" role="presentation">
-                      <tr>
-                        <td valign="middle" style="padding-right: 8px;">
-                          <img src="/image/logo.svg" alt="Logo"
-                            style="width: 75px; height: auto; display: block; vertical-align: middle;" />
-                        </td>
-                        <!-- <td valign="middle">
-                          <span
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #1F2020; display: inline-block; vertical-align: middle; margin: 0;">
-                            Cross Connect
-                          </span>
-                        </td> -->
-                      </tr>
-                    </table>
-                  </td>
-                  <td width="50%" align="right" valign="middle" style="padding: 4px 0;">
-                    <a href="#"
-                      style="display: inline-block; padding: 4px 10px; border-radius: 24px; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); background-color: #647D74; text-decoration: none; color: #fff; font-family: 'Lora', Arial, san-serif; font-size: 12px; font-weight: 500; line-height: 16px; letter-spacing: 0.12px;">
-                      Free Trial
-                    </a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- spacer -->
-          <tr>
-            <td style="padding-bottom: 20px"></td>
-          </tr>
-
-          <!-- section-2 -->
-          <tr>
-            <td valign="top" style="padding: 0 16px;">
-              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                style="margin: auto;">
-                <tr>
-                  <td align="center">
-                    <h3
-                      style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 24px; font-weight: 400; line-height: 28px; color: #181818; vertical-align: middle; padding-bottom: 8px; margin: 0;">
-                      Faith, Finally Within Reach</h3>
-                    <p
-                      style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #1F2020; vertical-align: middle; padding-bottom: 16px; margin: 0;">
-                      Rooted in timeless wisdom, Cross Connect brings scripture, journaling, and guidance into your
-                      everyday life — simple, personal, and always with you.</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center">
-                    <a href="#"
-                      style="width: 100%; max-width: 134px; display: inline-block; padding: 8px 16px; border-radius: 24px; border: 1px solid #647D74; background-color: #FFF; text-decoration: none; color: #647D74; font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 14px; font-weight: 700; line-height: 18px; letter-spacing: 0.14px;">
-                      Install App
-                    </a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- spacer -->
-          <tr>
-            <td style="padding-bottom: 40px"></td>
-          </tr>
-
-          <!-- section-3 -->
-          <tr>
-            <td valign="top" style="padding: 0 16px;">
-              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                style="margin: auto;">
-                <tr>
-                  <td valign="middle">
-                    <div class="card">
-                      <div class="card-content">
-                        <div class="quote-content-wrapper">
-                          <p class="quote-text" id="verse-content">
-                          </p>
-                          <span class="ellipsis-end-quote">”</span>
-                        </div>
-                        <p class="verse" id="verse"></p>
-                        <p id="more-about" class="footer-text"></p>
-                        <a id="chatLink" class="ask-pete-btn"><img src="/image/chat-with-pete.png"
-                            class="chat-with-pete" alt="chat with pete" /> Ask Pete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- spacer -->
-          <tr>
-            <td style="padding-bottom: 40px"></td>
-          </tr>
-
-          <!-- section-4 -->
-          <tr>
-            <td valign="top" style="padding: 0 16px;">
-              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                style="margin: auto; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); padding: 20px 22px; border-radius: 12px;">
-                <tr>
-                  <td valign="middle" align="center">
-                    <p
-                      style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #181818; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
-                      Special Offer <br />
-                      <span style="color: #7C411E; display: inline-block; margin-top: 4px;">Get a 30 Day Free
-                        Trial</span>
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                      style="margin: auto;">
-                      <tr>
-                        <td valign="middle" width="100%">
-                          <div style="display: flex; justify-content: center; align-items: center; gap: 12px;">
-                            <a href="#" style="display: block;">
-                              <img src="/image/google-play.png" alt="play store"
-                                style="width: 100%; max-width: 134px; height: auto; display: block; vertical-align: middle;" />
-                            </a>
-                            <a href="#" style="display: block;">
-                              <img src="/image/apple-app-store.png" alt="app store"
-                                style="width: 100%; max-width: 134px; height: auto; display: block; vertical-align: middle;" />
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- spacer -->
-          <tr>
-            <td style="padding-bottom: 40px"></td>
-          </tr>
-
-          <!-- section-5 -->
-          <tr>
-            <td valign="top" style="padding: 0 16px;">
-              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                style="margin: auto;">
-                <tr>
-                  <td valign="middle" align="center">
-                    <p
-                      style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 24px; font-weight: 400; line-height: 28px; color: #181818; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
-                      Features
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="background-color: #EFEFEF; padding: 40px 0; border-radius: 12px 12px 0 0;">
-                    <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                      style="margin: auto;">
-                      <tr>
-                        <td valign="middle" align="center" style="padding: 0 20px">
-                          <h3
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
-                            Pete - Your Spiritual Guide</h3>
-                          <img src="image/pete_ your_spiritual_guide.png" alt="Chat with Pete"
-                            style="display: block; width: 100%; max-width: 248px; height: auto; vertical-align: middle;" />
-                          <p
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
-                            Meet Pete — the heart of Cross Connect. Think of Pete as a friend who’s always there to
-                            listen, encourage, and point you back to God’s truth. No matter what’s on your heart — big
-                            or small — you’ll never have to walk through it alone.
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="background-color: #F2ECE9; padding: 40px 0;">
-                    <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                      style="margin: auto;">
-                      <tr>
-                        <td valign="middle" align="center" style="padding: 0 20px">
-                          <h3
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
-                            Smart Journaling Experience</h3>
-                          <img src="image/smart_journaling_experience.png" alt="Smart Journaling Experience"
-                            style="width: 100%; max-width: 248px; height: auto; display: block; vertical-align: middle;" />
-                          <p
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
-                            The world's first automated spiritual journal. As you talk with Pete, your journal builds
-                            itself — all of your key moments, conversations, and reflections are captured instantly,
-                            creating a richer, more intuitive journaling experience than ever before!
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="background-color: #EFEFEF; padding: 40px 0;">
-                    <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                      style="margin: auto;">
-                      <tr>
-                        <td valign="middle" align="center" style="padding: 0 20px">
-                          <h3
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
-                            Personalized Cards Grow<br />
-                            As You Do</h3>
-                          <img src="image/personalized_cards_grow_as_you_do.png" alt="Smart Journaling Experience"
-                            style="width: 100%; max-width: 248px; height: auto; display: block; vertical-align: middle;" />
-                          <p
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
-                            These are Personal Conversation Cards — designed for you and the topics Christians wrestle
-                            with most: crisis, forgiveness, faith, purpose, and relationships. For the first time, get
-                            meaningful, profound biblical feedback where and when you need it most.
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td style="background-color: #F2ECE9; padding: 40px 0; border-radius: 0 0 12px 12px;">
-                    <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                      style="margin: auto;">
-                      <tr>
-                        <td valign="middle" align="center" style="padding: 0 20px">
-                          <h3
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
-                            Explore The Bible</h3>
-                          <img src="/image/explore_the_bible2.png" alt="Explore The Bible"
-                            style="width: 100%; max-width: 248px; height: auto;display: block; vertical-align: middle;" />
-                          <p
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
-                            More than a Bible — an interactive, integrated experience connected with Pete. Ask
-                            questions, explore meaning, and understand the deeper context of Scripture in real time.
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- spacer -->
-          <tr>
-            <td style="padding-bottom: 40px"></td>
-          </tr>
-
-          <!-- section-6 -->
-          <tr>
-            <td style="border-radius: 12px 12px 0 0; padding: 0 16px;">
-              <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                class="cross-connect">
-                <tr>
-                  <td align="center">
-                    <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_05.png" alt="Cross"
-                      style="width: 100%; max-width: 124px; height: auto; display:block; border-radius:12px; object-fit:cover;" />
-                  </td>
-                </tr>
-
-                <tr>
-                  <td align="center" style="padding: 10px 0 0;">
-                    <div>
-                      <div
-                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600; text-align:center; margin-bottom: 16px;">
-                        Learn more about our "Cross Connect Pendant (Smart Cross)" — a sacred wearable that bridges
-                        your
-                        faith and your daily life.
-                      </div>
-                      <a href="#" target="_blank"
-                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; display:inline-block; width: 200px; max-width: 200px; background-color:#647D74; color:#ffffff; text-decoration: none; font-weight: 700; font-size: 14px; line-height: 18px;   letter-spacing: 0.14px; padding: 8px 16px; border-radius: 24px; letter-spacing: 0.2px;">
-                        Pre-Order
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  style="margin: auto;">
+                  <tr>
+                    <td width="50%" valign="middle" style="padding: 4px 0; cursor: pointer;">
+                      <table border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <td valign="middle" style="padding-right: 8px;">
+                            <img src="/image/logo.svg" alt="Logo"
+                              style="width: 75px; height: auto; display: block; vertical-align: middle;" />
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td width="50%" align="right" valign="middle" style="padding: 4px 0;">
+                      <a href="#"
+                        style="display: inline-block; padding: 4px 10px; border-radius: 24px; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); background-color: #647D74; text-decoration: none; color: #fff; font-family: 'Lora', Arial, san-serif; font-size: 12px; font-weight: 500; line-height: 16px; letter-spacing: 0.12px;">
+                        Free Trial
                       </a>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-          <!-- spacer -->
-          <tr>
-            <td style="padding-bottom: 40px"></td>
-          </tr>
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 20px"></td>
+            </tr>
 
-          <!-- section-7 -->
-          <tr>
-            <td style="padding: 0 16px;">
-              <!-- Connect With Us Section -->
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
-                style="background-color: #F0F2F1; border-top-left-radius: 12px; border-top-right-radius: 12px; padding-top: 24px;">
-                <tr>
-                  <td valign="middle" align="center">
-                    <div>
-                      <img src="/image/shield.png" alt="shield" style="width: 21px; height: auto; display:block;" />
-                      <h5
-                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 14px; font-weight: 600; line-height: 18px; color: #647D74; letter-spacing: 0.14px; vertical-align: middle; margin: 0; padding: 6px 0;">
-                        Your privacy is our priority!</h5>
+            <!-- section-2 -->
+            <tr>
+              <td valign="top" style="padding: 0 16px;">
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  style="margin: auto;">
+                  <tr>
+                    <td align="center">
+                      <h3
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 24px; font-weight: 400; line-height: 28px; color: #181818; vertical-align: middle; padding-bottom: 8px; margin: 0;">
+                        Faith, Finally Within Reach</h3>
                       <p
-                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 16px; color: #606161; letter-spacing: 0.12px; vertical-align: middle; margin: 0;">
-                        © 2025 Cross Connect</p>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center">
-                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
-                      style="padding:0;">
-                      <tr>
-                        <td align="center" valign="middle" style="padding:16px 0 12px;">
-                          <div
-                            style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size:12px; line-height:16px; letter-spacing:0.12px; font-weight:600; color:#1F2020; font-family:Lora, sans-serif, serif; text-align:center;">
-                            Connect with us
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td align="center" valign="middle">
-                          <table role="presentation" align="center" border="0" cellspacing="0" cellpadding="0"
-                            width="204" style="margin:0 auto;">
-                            <tr>
-                              <td style="padding:0; text-align:center; vertical-align:middle;">
-                                <a href="https://www.facebook.com/people/CrossConnectapp/61575315042331/"
-                                  target="_blank">
-                                  <img src="/image/social_icons/fb_logo_24.svg" alt="facebook"
-                                    style="width: 24px; height: auto; display:block; border:0;" />
-                                </a>
-                              </td>
-                              <td style="padding:0; text-align:center; vertical-align:middle;">
-                                <a href="https://www.youtube.com/channel/UCyayy10_iiBWZRRMtiSmDww" target="_blank">
-                                  <img src="/image/social_icons/yt_logo_24.svg" alt="youtube"
-                                    style="width: 24px; height: auto; display:block; border:0;" />
-                                </a>
-                              </td>
-                              <td style="padding:0; text-align:center; vertical-align:middle;">
-                                <a href="https://www.instagram.com/crossconnect_app/?igsh=YXd4OW44bTRxaHgw#"
-                                  target="_blank">
-                                  <img src="/image/social_icons/instagram_logo_24.svg" alt="instagram"
-                                    style="width: 24px; height: auto; display:block; border:0;" />
-                                </a>
-                              </td>
-                              <td style="padding:0; text-align:center; vertical-align:middle;">
-                                <a href="https://www.tiktok.com/@crossconnectapp?_t=ZT-8vpqmlMsz5n&_r=1"
-                                  target="_blank">
-                                  <img src="/image/social_icons/tiktok_logo_24.svg" alt="tiktok"
-                                    style="width: 24px; height: auto; display:block; border:0;" />
-                                </a>
-                              </td>
-                              <td style="padding:0; text-align:center; vertical-align:middle;">
-                                <a href="https://x.com/crossconnectap?s=21&t=szAJNpXDnS9dcNTqkKzPng" target="_blank">
-                                  <img src="/image/social_icons/x_logo_24.svg" alt="twitter"
-                                    style="width: 24px; height: auto; display:block; border:0;" />
-                                </a>
-                              </td>
-                              <td style="padding:0; text-align:center; vertical-align:middle;">
-                                <a href="https://www.reddit.com/user/CrossConnectApp/" target="_blank">
-                                  <img src="/image/social_icons/reddit_logo_24.svg" alt="reddit"
-                                    style="width: 24px; height: auto; display:block; border:0;" />
-                                </a>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #1F2020; vertical-align: middle; padding-bottom: 16px; margin: 0;">
+                        Rooted in timeless wisdom, Cross Connect brings scripture, journaling, and guidance into your
+                        everyday life — simple, personal, and always with you.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <a href="#"
+                        style="width: 100%; max-width: 134px; display: inline-block; padding: 8px 16px; border-radius: 24px; border: 1px solid #647D74; background-color: #FFF; text-decoration: none; color: #647D74; font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 14px; font-weight: 700; line-height: 18px; letter-spacing: 0.14px;">
+                        Install App
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-              <!-- Footer Links Section -->
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
-                style="background-color: #F0F2F1; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
-                <tr>
-                  <td align="center">
-                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
-                      style="border-radius:0 0 24px 24px; padding:0 0 24px;">
-                      <tr>
-                        <td align="center" style="padding:16px 0 0;">
-                          <div
-                            style="font-size:12px; color:#1F2020; font-family: 'Lora', Georgia, serif, Arial, sans-serif; text-align:center; line-height:18px;">
-                            <a href="https://crossconnectapp.com/policies/privacy-policy" target="_blank"
-                              style="color:#1F2020; text-decoration:underline;">Privacy Policy</a>
-                            &nbsp;&nbsp;<span style="color: #7A7B7B">•</span>&nbsp;&nbsp;
-                            <a href="https://crossconnectapp.com/policies/terms-and-conditions" target="_blank"
-                              style="color:#1F2020; text-decoration:underline;">Terms and Conditions</a>
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 40px"></td>
+            </tr>
+
+            <!-- section-3 -->
+            <tr>
+              <td valign="top" style="padding: 0 16px;">
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  style="margin: auto;">
+                  <tr>
+                    <td valign="middle">
+                      <div class="card">
+                        <div class="card-content">
+                          <div class="quote-content-wrapper">
+                            <p class="quote-text" id="verse-content">
+                            </p>
+                            <span class="ellipsis-end-quote">”</span>
                           </div>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
+                          <p class="verse" id="verse">John 3:16</p>
+                          <p id="more-about" class="footer-text"></p>
+                          <button class="ask-pete-btn action-button" id="chatLink">
+                            <img src="/image/chat-with-pete.png" class="chat-with-pete" alt="chat with pete" /> Ask
+                            Pete
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 40px"></td>
+            </tr>
+
+            <!-- section-4 -->
+            <tr>
+              <td valign="top" style="padding: 0 16px;">
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  style="margin: auto; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); padding: 20px 22px; border-radius: 12px;">
+                  <tr>
+                    <td valign="middle" align="center">
+                      <p
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #181818; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
+                        Special Offer <br />
+                        <span style="color: #7C411E; display: inline-block; margin-top: 4px;">Get a 30 Day Free
+                          Trial</span>
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                        style="margin: auto;">
+                        <tr>
+                          <td valign="middle" width="100%">
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 12px;">
+                              <a href="#" style="display: block;">
+                                <img src="/image/google-play.png" alt="play store"
+                                  style="width: 100%; max-width: 134px; height: auto; display: block; vertical-align: middle;" />
+                              </a>
+                              <a href="#" style="display: block;">
+                                <img src="/image/apple-app-store.png" alt="app store"
+                                  style="width: 100%; max-width: 134px; height: auto; display: block; vertical-align: middle;" />
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 40px"></td>
+            </tr>
+
+            <!-- section-5 -->
+            <tr>
+              <td valign="top" style="padding: 0 16px;">
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  style="margin: auto;">
+                  <tr>
+                    <td valign="middle" align="center">
+                      <p
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 24px; font-weight: 400; line-height: 28px; color: #181818; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
+                        Features
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="background-color: #EFEFEF; padding: 40px 0; border-radius: 12px 12px 0 0;">
+                      <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                        style="margin: auto;">
+                        <tr>
+                          <td valign="middle" align="center" style="padding: 0 20px">
+                            <h3
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
+                              Pete - Your Spiritual Guide</h3>
+                            <img src="image/pete_ your_spiritual_guide.png" alt="Chat with Pete"
+                              style="display: block; width: 100%; max-width: 248px; height: auto; vertical-align: middle;" />
+                            <p
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
+                              Meet Pete — the heart of Cross Connect. Think of Pete as a friend who’s always there to
+                              listen, encourage, and point you back to God’s truth. No matter what’s on your heart — big
+                              or small — you’ll never have to walk through it alone.
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="background-color: #F2ECE9; padding: 40px 0;">
+                      <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                        style="margin: auto;">
+                        <tr>
+                          <td valign="middle" align="center" style="padding: 0 20px">
+                            <h3
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
+                              Smart Journaling Experience</h3>
+                            <img src="image/smart_journaling_experience.png" alt="Smart Journaling Experience"
+                              style="width: 100%; max-width: 248px; height: auto; display: block; vertical-align: middle;" />
+                            <p
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
+                              The world's first automated spiritual journal. As you talk with Pete, your journal builds
+                              itself — all of your key moments, conversations, and reflections are captured instantly,
+                              creating a richer, more intuitive journaling experience than ever before!
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="background-color: #EFEFEF; padding: 40px 0;">
+                      <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                        style="margin: auto;">
+                        <tr>
+                          <td valign="middle" align="center" style="padding: 0 20px">
+                            <h3
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
+                              Personalized Cards Grow<br />
+                              As You Do</h3>
+                            <img src="image/personalized_cards_grow_as_you_do.png" alt="Smart Journaling Experience"
+                              style="width: 100%; max-width: 248px; height: auto; display: block; vertical-align: middle;" />
+                            <p
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
+                              These are Personal Conversation Cards — designed for you and the topics Christians wrestle
+                              with most: crisis, forgiveness, faith, purpose, and relationships. For the first time, get
+                              meaningful, profound biblical feedback where and when you need it most.
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="background-color: #F2ECE9; padding: 40px 0; border-radius: 0 0 12px 12px;">
+                      <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                        style="margin: auto;">
+                        <tr>
+                          <td valign="middle" align="center" style="padding: 0 20px">
+                            <h3
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 18px; font-weight: 700; line-height: 22px; color: #7C411E; letter-spacing: 0.18px; vertical-align: middle; margin: 0; padding-bottom: 20px;">
+                              Explore The Bible</h3>
+                            <img src="/image/explore_the_bible2.png" alt="Explore The Bible"
+                              style="width: 100%; max-width: 248px; height: auto;display: block; vertical-align: middle;" />
+                            <p
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; vertical-align: middle; margin: 0; padding-top: 20px;">
+                              More than a Bible — an interactive, integrated experience connected with Pete. Ask
+                              questions, explore meaning, and understand the deeper context of Scripture in real time.
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 40px"></td>
+            </tr>
+
+            <!-- section-6 -->
+            <tr>
+              <td style="border-radius: 12px 12px 0 0; padding: 0 16px;">
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  class="cross-connect">
+                  <tr>
+                    <td align="center">
+                      <img src="https://app.crossconnectapp.com/email-templates/welcome/welcome_email_05.png"
+                        alt="Cross"
+                        style="width: 100%; max-width: 124px; height: auto; display:block; border-radius:12px; object-fit:cover;" />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td align="center" style="padding: 10px 0 0;">
+                      <div>
+                        <div
+                          style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600; text-align:center; margin-bottom: 16px;">
+                          Learn more about our "Cross Connect Pendant (Smart Cross)" — a sacred wearable that bridges
+                          your
+                          faith and your daily life.
+                        </div>
+                        <a href="#" target="_blank"
+                          style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; display:inline-block; width: 200px; max-width: 200px; background-color:#647D74; color:#ffffff; text-decoration: none; font-weight: 700; font-size: 14px; line-height: 18px;   letter-spacing: 0.14px; padding: 8px 16px; border-radius: 24px; letter-spacing: 0.2px;">
+                          Pre-Order
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 40px"></td>
+            </tr>
+
+            <!-- section-7 -->
+            <tr>
+              <td style="padding: 0 16px;">
+                <!-- Connect With Us Section -->
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
+                  style="background-color: #F0F2F1; border-top-left-radius: 12px; border-top-right-radius: 12px; padding-top: 24px;">
+                  <tr>
+                    <td valign="middle" align="center">
+                      <div>
+                        <img src="/image/shield.png" alt="shield" style="width: 21px; height: auto; display:block;" />
+                        <h5
+                          style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 14px; font-weight: 600; line-height: 18px; color: #647D74; letter-spacing: 0.14px; vertical-align: middle; margin: 0; padding: 6px 0;">
+                          Your privacy is our priority!</h5>
+                        <p
+                          style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 16px; color: #606161; letter-spacing: 0.12px; vertical-align: middle; margin: 0;">
+                          © 2025 Cross Connect</p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
+                        style="padding:0;">
+                        <tr>
+                          <td align="center" valign="middle" style="padding:16px 0 12px;">
+                            <div
+                              style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size:12px; line-height:16px; letter-spacing:0.12px; font-weight:600; color:#1F2020; font-family:Lora, sans-serif, serif; text-align:center;">
+                              Connect with us
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="middle">
+                            <table role="presentation" align="center" border="0" cellspacing="0" cellpadding="0"
+                              width="204" style="margin:0 auto;">
+                              <tr>
+                                <td style="padding:0; text-align:center; vertical-align:middle;">
+                                  <a href="https://www.facebook.com/people/CrossConnectapp/61575315042331/"
+                                    target="_blank">
+                                    <img src="/image/social_icons/fb_logo_24.svg" alt="facebook"
+                                      style="width: 24px; height: auto; display:block; border:0;" />
+                                  </a>
+                                </td>
+                                <td style="padding:0; text-align:center; vertical-align:middle;">
+                                  <a href="https://www.youtube.com/channel/UCyayy10_iiBWZRRMtiSmDww" target="_blank">
+                                    <img src="/image/social_icons/yt_logo_24.svg" alt="youtube"
+                                      style="width: 24px; height: auto; display:block; border:0;" />
+                                  </a>
+                                </td>
+                                <td style="padding:0; text-align:center; vertical-align:middle;">
+                                  <a href="https://www.instagram.com/crossconnect_app/?igsh=YXd4OW44bTRxaHgw#"
+                                    target="_blank">
+                                    <img src="/image/social_icons/instagram_logo_24.svg" alt="instagram"
+                                      style="width: 24px; height: auto; display:block; border:0;" />
+                                  </a>
+                                </td>
+                                <td style="padding:0; text-align:center; vertical-align:middle;">
+                                  <a href="https://www.tiktok.com/@crossconnectapp?_t=ZT-8vpqmlMsz5n&_r=1"
+                                    target="_blank">
+                                    <img src="/image/social_icons/tiktok_logo_24.svg" alt="tiktok"
+                                      style="width: 24px; height: auto; display:block; border:0;" />
+                                  </a>
+                                </td>
+                                <td style="padding:0; text-align:center; vertical-align:middle;">
+                                  <a href="https://x.com/crossconnectap?s=21&t=szAJNpXDnS9dcNTqkKzPng" target="_blank">
+                                    <img src="/image/social_icons/x_logo_24.svg" alt="twitter"
+                                      style="width: 24px; height: auto; display:block; border:0;" />
+                                  </a>
+                                </td>
+                                <td style="padding:0; text-align:center; vertical-align:middle;">
+                                  <a href="https://www.reddit.com/user/CrossConnectApp/" target="_blank">
+                                    <img src="/image/social_icons/reddit_logo_24.svg" alt="reddit"
+                                      style="width: 24px; height: auto; display:block; border:0;" />
+                                  </a>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Footer Links Section -->
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
+                  style="background-color: #F0F2F1; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                  <tr>
+                    <td align="center">
+                      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
+                        style="border-radius:0 0 24px 24px; padding:0 0 24px;">
+                        <tr>
+                          <td align="center" style="padding:16px 0 0;">
+                            <div
+                              style="font-size:12px; color:#1F2020; font-family: 'Lora', Georgia, serif, Arial, sans-serif; text-align:center; line-height:18px;">
+                              <a href="https://crossconnectapp.com/policies/privacy-policy" target="_blank"
+                                style="color:#1F2020; text-decoration:underline;">Privacy Policy</a>
+                              &nbsp;&nbsp;<span style="color: #7A7B7B">•</span>&nbsp;&nbsp;
+                              <a href="https://crossconnectapp.com/policies/terms-and-conditions" target="_blank"
+                                style="color:#1F2020; text-decoration:underline;">Terms and Conditions</a>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- chat page -->
+        <div class="page right" id="chat">
+          <div id="backToHome">
+            <button type="button" style="cursor: pointer; border: none; background: none; margin-right: auto;"
+              data-page="home">
+              <img src="/image/angle-left.png" alt="Left angle"
+                style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
+              <span
+                style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle;">
+                Go Home
+              </span>
+            </button>
+          </div>
+          <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+            style="margin: auto;">
+
+            <!-- section-1 -->
+            <tr>
+              <td align="center" valign="top">
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  style="margin: auto;">
+                  <tr>
+                    <td width="25%" valign="middle" style="padding: 4px 0;">
+                      <button class="action-button" style="display: inline-block;" data-page="home">
+                        <img src="/image/LOGO_Cross Conncet_Icon.svg" alt="Logo"
+                          style="width: 32px; height: auto; display: block; vertical-align: middle;" />
+                      </button>
+                    </td>
+                    <td width="25%" valign="middle" align="center">
+                      <div style="padding-bottom: 2px;">
+                        <img src="/image/chat-with-pete-black.png" alt="Chat with Pete"
+                          style="width: 16px; height: auto; display: inline-block; vertical-align: middle; padding-right: 4px;" />
+                        <span
+                          style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                          Pete
+                        </span>
+                      </div>
+                      <p id="todaysDate"
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 16px; letter-spacing: 0.12px; color: #606161; display: inline-block; vertical-align: middle; margin: 0;">
+                      </p>
+                    </td>
+                    <td width="25%" align="right" valign="middle" style="padding: 4px 0;">
+                      <a href="#"
+                        style="display: inline-block; padding: 4px 10px; border-radius: 24px; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); background-color: #647D74; text-decoration: none; color: #fff; font-family: 'Lora', Arial, san-serif; font-size: 12px; font-weight: 500; line-height: 16px; letter-spacing: 0.12px;">
+                        Free Trial
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 20px"></td>
+            </tr>
+
+            <!-- section-2 -->
+            <tr>
+              <td valign="top" style="padding: 10px 0;">
+                <button class="action-button" style="display: inline-block; background: transparent;" data-page="home">
+                  <img src="/image/angle-left.png" alt="Left angle"
+                    style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
+                  <span
+                    style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                    Go Home
+                  </span>
+                </button>
+              </td>
+            </tr>
+
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 16px"></td>
+            </tr>
+
+            <!-- section-3 -->
+            <tr>
+              <td valign="top"
+                style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+                <p id="title"
+                  style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                </p>
+              </td>
+            </tr>
+
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 16px"></td>
+            </tr>
+
+            <!-- section-4 -->
+            <tr>
+              <td>
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  style="margin: auto;">
+                  <tr>
+                    <td width="10%"></td>
+                    <td width="90%" valign="top"
+                      style="padding: 12px; background-color: #F3EBE0; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+                      <p id="human"
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 16px"></td>
+            </tr>
+
+            <!-- section-5 -->
+            <tr>
+              <td>
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  style="margin: auto;">
+                  <tr id="response">
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- spacer -->
+            <tr>
+              <td style="padding-bottom: 40px"></td>
+            </tr>
+          </table>
+
+
+        </div>
+
+      </div>
+
+      <!-- chat -->
+      <div class="chat">
+        <button type="button" id="openPopup"
+          style="font-family: 'Lora', Georgia, serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #606161; background: none; border: 1px solid #839790; width: 100%; cursor: pointer; padding: 0; text-align: left; background-color: #fff; padding: 12px 16px; border-radius: 12px;">
+          Let's Chat...
+        </button>
+      </div>
+
+      <!-- popup -->
+      <div class="popup-inner" id="popup">
+        <div
+          style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+          <img src="/image/logo-white-bg.svg" style="width: 48px; height: auto; display: inline-block;" alt="logo" />
+        </div>
+        <p
+          style="font-size: 18px; font-weight: 700; color: #181818; line-height: 22px; margin: 0 0 24px 0; letter-spacing: 0.18px;">
+          Continue the conversation in <br /> our Cross Connect app.
+        </p>
+        <div style="display: flex; gap: 8px; justify-content: center;">
+          <a href="#"
+            style="width: 100%; max-width: 150px; padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: transparent; letter-spacing: 0.14px; color: #647D74; border: 2px solid #647D74;">
+            Explore features
+          </a>
+
+          <a href="#"
+            style="width: 100%; max-width: 150px; padding: 8px 16px; border-radius: 24px; font-size: 14px; font-weight: 700; line-height: 18px; text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.3s ease; background-color: #647D74; letter-spacing: 0.14px; color: #ffffff; border: 2px solid transparent;">
+            Download App
+          </a>
+        </div>
       </div>
 
       <!-- custom scrollbar -->
@@ -799,11 +1160,16 @@
     </div>
   </center>
 
-  <script>
+  <script type="module">
+    import chat from './chat.js';
+
     const content = document.getElementById('content');
     const scrollbar = document.getElementById('customScrollbar');
     const thumb = document.getElementById('scrollbarThumb');
 
+    /***********************/
+    /* custom scrollbar */
+    /***********************/
     let isDragging = false;
     let startY = 0;
     let startScrollTop = 0;
@@ -867,7 +1233,9 @@
     // Update on window resize
     window.addEventListener('resize', updateScrollbar);
 
-    // Load and display chat content
+    /***********************/
+    /* Load and display chat content */
+    /***********************/
     fetch('/chat.json')
       .then(response => response.json())
       .then(data => {
@@ -879,7 +1247,12 @@
         const verse = document.querySelector('#verse');
         const chatLink = document.querySelector('#chatLink');
         const moreAbout = document.querySelector('#more-about');
-        chatLink.setAttribute('href', `chat.html?tag=${tag}`);
+        chatLink.addEventListener('click', function () {
+          navigateToPage('chat');
+          chat();
+          // window.location.href = `chat.html?tag=${tag}`;
+        })
+        // chatLink.setAttribute('href', `chat.html?tag=${tag}`);
         verseContent.innerHTML = content.content;
         verse.innerHTML = content.verse;
         moreAbout.innerHTML = `Want to know more about this${content.verse ? ' verse' : '?'}`;
@@ -912,6 +1285,88 @@
         quElement.style.display = 'none';
       }
     }
+
+    /***********************/
+    /* dynamic page */
+    /***********************/
+    let currentPage = 'home';
+    const homePage = document.querySelector('#home');
+    const chatButton = document.querySelector('.chat');
+
+    function navigateToPage(targetPageId) {
+      const currentPageEl = document.getElementById(currentPage);
+      const targetPageEl = document.getElementById(targetPageId);
+
+      if (!currentPageEl || !targetPageEl || currentPage === targetPageId) return;
+
+      // Determine direction
+      const pages = ['home', 'chat'];
+      const currentIndex = pages.indexOf(currentPage);
+      const targetIndex = pages.indexOf(targetPageId);
+      const isForward = targetIndex > currentIndex;
+
+      // Hide chat button immediately when leaving chat
+      if (currentPage === 'chat') {
+        chatButton.style.display = 'none';
+        homePage.style.display = 'block';
+      }
+
+      // Set initial state for target page
+      targetPageEl.classList.remove('left', 'right', 'active');
+      targetPageEl.classList.add(isForward ? 'right' : 'left');
+
+      // Force reflow
+      targetPageEl.offsetHeight;
+
+      // Listen for transition end
+      const handleTransitionEnd = (e) => {
+        if (e.target === targetPageEl && e.propertyName === 'transform') {
+          // Show chat button when chat transition completes
+          if (targetPageId === 'chat') {
+            chatButton.style.display = 'block';
+            homePage.style.display = 'none';
+          }
+
+          // Update scrollbar after page transition
+          updateScrollbar();
+
+          targetPageEl.removeEventListener('transitionend', handleTransitionEnd);
+        }
+      };
+
+      targetPageEl.addEventListener('transitionend', handleTransitionEnd);
+
+      // Animate
+      setTimeout(() => {
+        currentPageEl.classList.remove('active');
+        currentPageEl.classList.add(isForward ? 'left' : 'right');
+
+        targetPageEl.classList.remove('left', 'right');
+        targetPageEl.classList.add('active');
+
+        //targetPageEl.scrollTop = 0;
+
+        currentPage = targetPageId;
+      }, 10);
+    }
+
+    document.querySelectorAll('.action-button').forEach(button => {
+      button.addEventListener('click', function () {
+        const targetPage = this.getAttribute('data-page');
+        if (targetPage) {
+          navigateToPage(targetPage);
+        }
+      });
+    });
+
+    window.addEventListener('popstate', function (event) {
+      if (event.state && event.state.page) {
+        navigateToPage(event.state.page);
+      }
+    });
+
+    // Set initial history state
+    history.replaceState({ page: 'home' }, '', '');
   </script>
 </body>
 
