@@ -78,8 +78,9 @@
       width: auto;
       background: #FDFCFA;
       border-radius: min(6vh, 58px);
-      padding: 3px 0 32px;
+      padding: 0 0 32px;
       overflow-y: auto;
+      overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       z-index: 2;
       scrollbar-width: none;
@@ -467,6 +468,10 @@
       padding: 20px 16px;
     }
 
+    .chat-header {
+      padding-top: 16px;
+    }
+
     @media only screen and (max-width: 640px) {
       .main-wrapper {
         background: #FDFCFA;
@@ -495,7 +500,7 @@
         width: 100vw;
         aspect-ratio: unset;
         max-height: 100%;
-        padding: 6px 0 32px !important;
+        padding: 0 0 32px !important;
         overflow-y: visible;
       }
 
@@ -553,6 +558,14 @@
       #customScrollbar {
         display: none;
       }
+
+      .chat-header {
+        padding-top: 0;
+      }
+
+      #chat {
+        padding: 8px 16px 20px;
+      }
     }
 
     @media only screen and (max-width: 392px) {
@@ -583,12 +596,12 @@
 
             <!-- section-1 -->
             <tr>
-              <td align="center" valign="top" style="position: sticky; top: -6px;
-            background-color: #FDFCFA; z-index: 9999; width: 100%; padding: 33px 16px 4px;" id="top-nav">
+              <td align="center" valign="top" style="position: sticky; top: 0;
+            background-color: #FDFCFA; z-index: 9999; width: 100%; padding: 36px 16px 4px;" id="top-nav">
                 <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
                   style="margin: auto;">
                   <tr>
-                    <td width="50%" valign="middle" style="padding: 4px 0; cursor: pointer;">
+                    <td width="50%" valign="middle" cursor: pointer;">
                       <table border="0" cellpadding="0" cellspacing="0" role="presentation">
                         <tr>
                           <td valign="middle" style="padding-right: 8px;">
@@ -598,7 +611,7 @@
                         </tr>
                       </table>
                     </td>
-                    <td width="50%" align="right" valign="middle" style="padding: 4px 0;">
+                    <td width="50%" align="right" valign="middle">
                       <a href="#"
                         style="display: inline-block; padding: 4px 10px; border-radius: 24px; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); background-color: #647D74; text-decoration: none; color: #fff; font-family: 'Lora', Arial, san-serif; font-size: 12px; font-weight: 500; line-height: 16px; letter-spacing: 0.12px;">
                         Free Trial
@@ -889,7 +902,7 @@
                           Your privacy is our priority!</h5>
                         <p
                           style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 16px; color: #606161; letter-spacing: 0.12px; vertical-align: middle; margin: 0;">
-                          © 2025 Cross Connect</p>
+                          © <span id="currentYear" /> Cross Connect</p>
                       </div>
                     </td>
                   </tr>
@@ -1004,11 +1017,11 @@
 
             <!-- section-1 -->
             <tr>
-              <td align="center" valign="top">
+              <td align="center" valign="top" class="chat-header">
                 <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
                   style="margin: auto;">
                   <tr>
-                    <td width="25%" valign="middle" style="padding: 4px 0;">
+                    <td width="25%" valign="middle">
                       <button class="action-button" style="display: inline-block;" data-page="home">
                         <img src="/image/LOGO_Cross Conncet_Icon.svg" alt="Logo"
                           style="width: 32px; height: auto; display: block; vertical-align: middle;" />
@@ -1027,7 +1040,7 @@
                         style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 16px; letter-spacing: 0.12px; color: #606161; display: inline-block; vertical-align: middle; margin: 0;">
                       </p>
                     </td>
-                    <td width="25%" align="right" valign="middle" style="padding: 4px 0;">
+                    <td width="25%" align="right" valign="middle">
                       <a href="#"
                         style="display: inline-block; padding: 4px 10px; border-radius: 24px; box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15); background-color: #647D74; text-decoration: none; color: #fff; font-family: 'Lora', Arial, san-serif; font-size: 12px; font-weight: 500; line-height: 16px; letter-spacing: 0.12px;">
                         Free Trial
@@ -1116,9 +1129,7 @@
             </tr>
           </table>
 
-
         </div>
-
       </div>
 
       <!-- chat -->
@@ -1163,9 +1174,18 @@
   <script type="module">
     import chat from './chat.js';
 
+    const date = new Date();
     const content = document.getElementById('content');
     const scrollbar = document.getElementById('customScrollbar');
     const thumb = document.getElementById('scrollbarThumb');
+
+    /***********************/
+    /* today's date & year */
+    /***********************/
+    const formattedDate = date.toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" });
+    const getCurrentYear = date.getFullYear();
+    document.getElementById('currentYear').innerHTML = getCurrentYear;
+    document.getElementById('todaysDate').innerHTML = formattedDate;
 
     /***********************/
     /* custom scrollbar */

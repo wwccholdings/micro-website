@@ -209,11 +209,6 @@ export default function chat() {
     }
   }
 
-  // today's date
-  const date = new Date();
-  const formattedDate = date.toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" });
-  document.getElementById('todaysDate').innerHTML = formattedDate;
-
   const frame = document.querySelector('.mobile-frame');
   const chat = document.querySelector('.chat');
 
