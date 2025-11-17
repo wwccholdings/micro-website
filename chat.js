@@ -102,10 +102,13 @@ export default function chat() {
     }
   });
 
-  // const backToHomeBtn = document.getElementById('backToHome');
   function handleScroll(scrollTop) {
     if (scrollTop >= 127) {
       backToHomeBtn.style.display = 'flex';
+      backToHomeBtn.style.opacity = '1';
+    } else if (scrollTop >= 60) {
+      backToHomeBtn.style.display = 'flex';
+      backToHomeBtn.style.opacity = '0';
     } else {
       backToHomeBtn.style.display = 'none';
     }
