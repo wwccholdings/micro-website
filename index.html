@@ -421,12 +421,54 @@
       transition: background 0.3s;
     }
 
-    /* #chat {
-      padding: 20px 16px;
-    } */
-
     .chat-header {
       padding: 16px 16px 8px;
+    }
+
+    #openPopup {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 20px;
+      color: #606161;
+      background: none;
+      border: 1px solid #839790;
+      width: 100%;
+      cursor: pointer;
+      padding: 0;
+      text-align: left;
+      background-color: #fff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px 0 rgba(100, 125, 116, 0.50);
+      position: relative;
+    }
+
+    #openPopup::after {
+      --angle: 0deg;
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 103%;
+      height: 110%;
+      background-image: conic-gradient(from var(--angle), #36696D, #BCBF8D);
+      border-radius: 12px;
+      z-index: -1;
+      filter: blur(16px);
+      opacity: 0.28;
+      animation: glow 3s linear infinite;
+    }
+
+    @keyframes glow {
+      from {
+        --angle: 0deg;
+      }
+
+      to {
+        --angle: 360deg;
+      }
     }
 
     @media only screen and (max-width: 640px) {
@@ -1105,8 +1147,7 @@
 
       <!-- chat -->
       <div class="chat">
-        <button type="button" id="openPopup"
-          style="font-family: 'Lora', Georgia, serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #606161; background: none; border: 1px solid #839790; width: 100%; cursor: pointer; padding: 0; text-align: left; background-color: #fff; padding: 12px 16px; border-radius: 12px;">
+        <button type="button" id="openPopup">
           Let's Chat...
         </button>
       </div>
