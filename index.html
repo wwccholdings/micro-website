@@ -51,6 +51,7 @@
     button {
       border: none;
       cursor: pointer;
+      background: unset;
     }
 
     a {
@@ -90,6 +91,10 @@
     /* Chrome / Safari */
     .inner-page::-webkit-scrollbar {
       display: none;
+    }
+
+    .main-logo {
+      background: transparent;
     }
 
     .card {
@@ -240,7 +245,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
       max-height: 830px;
     }
 
@@ -268,34 +272,6 @@
       line-height: 20px;
       color: #fff;
       margin-top: 28px;
-    }
-
-    /* Custom Scrollbar */
-    .custom-scrollbar {
-      position: absolute;
-      right: 16px;
-      top: 35%;
-      width: 12px;
-      height: calc(100% - 20px);
-      display: flex;
-      justify-content: center;
-      padding: 4px;
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: width 0.3s;
-      height: 200px;
-      border: 1px solid rgba(255, 255, 255, 0.50);
-    }
-
-    .scrollbar-thumb {
-      position: absolute;
-      width: 8px;
-      margin: 2px 0;
-      background: rgba(255, 255, 255, 0.70);
-      border-radius: 10px;
-      cursor: grab;
-      transition: background 0.3s;
     }
 
     .cross-connect {
@@ -351,12 +327,19 @@
       z-index: 1;
     }
 
+    .chat-inner {
+      padding: 20px 0px 20px;
+    }
+
+    .mobile-sticky-back {
+      padding: 0 16px;
+    }
+
     #backToHome {
       display: none;
-      max-width: 360px;
-      padding: 16px 0;
+      padding: 32px 16px 16px;
       position: sticky;
-      top: -34px;
+      top: 0px;
       left: 0;
       right: 0;
       z-index: 10;
@@ -370,7 +353,7 @@
     .chat {
       display: none;
       position: absolute;
-      bottom: 20px;
+      bottom: 18px;
       left: 50%;
       transform: translateX(-50%);
       width: calc(100% - 8%);
@@ -384,32 +367,6 @@
     .popup-inner {
       position: absolute;
       bottom: 14px;
-      left: 50%;
-      transform: translateX(-40%);
-      opacity: 0;
-      visibility: hidden;
-      z-index: -1;
-      width: calc(100% - 34px);
-      background: linear-gradient(180deg, rgba(184, 195, 191, 0.00) 0%, #B8C3BF 100%);
-      backdrop-filter: blur(4px);
-      padding: 32px 16px;
-      text-align: center;
-      border-bottom-left-radius: min(6vh, 58px);
-      border-bottom-right-radius: min(6vh, 58px);
-      transition: all 0.3s ease;
-    }
-
-    .popup-inner.show {
-      transform: translateX(-50%);
-      opacity: 1;
-      visibility: visible;
-      z-index: 9999;
-
-    }
-
-    .popup-inner {
-      position: absolute;
-      bottom: 15px;
       left: 50%;
       transform: translate(-50%, 1%);
       opacity: 0;
@@ -457,19 +414,61 @@
     .scrollbar-thumb {
       position: absolute;
       width: 8px;
-      margin: 2px 0;
+      margin: 1px 0;
       background: rgba(255, 255, 255, 0.70);
       border-radius: 10px;
       cursor: grab;
       transition: background 0.3s;
     }
 
-    #chat {
-      padding: 20px 16px;
+    .chat-header {
+      padding: 16px 16px 8px;
     }
 
-    .chat-header {
-      padding-top: 16px;
+    #openPopup {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 20px;
+      color: #606161;
+      background: none;
+      border: 1px solid #839790;
+      width: 100%;
+      cursor: pointer;
+      padding: 0;
+      text-align: left;
+      background-color: #fff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px 0 rgba(100, 125, 116, 0.50);
+      position: relative;
+    }
+
+    #openPopup::after {
+      --angle: 0deg;
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 103%;
+      height: 110%;
+      background-image: conic-gradient(from var(--angle), #36696D, #BCBF8D);
+      border-radius: 12px;
+      z-index: -1;
+      filter: blur(16px);
+      opacity: 0.28;
+      animation: glow 3s linear infinite;
+    }
+
+    @keyframes glow {
+      from {
+        --angle: 0deg;
+      }
+
+      to {
+        --angle: 360deg;
+      }
     }
 
     @media only screen and (max-width: 640px) {
@@ -549,10 +548,7 @@
       }
 
       #backToHome {
-        top: 0;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        padding: 10px 16px;
+        display: none;
       }
 
       #customScrollbar {
@@ -560,11 +556,20 @@
       }
 
       .chat-header {
-        padding-top: 0;
+        padding: 8px 16px 8px;
       }
 
-      #chat {
-        padding: 8px 16px 20px;
+      .chat-inner {
+        padding: 0 0 20px;
+      }
+
+      .mobile-sticky-back {
+        position: sticky;
+        top: 0;
+        background-color: #FDFCFA;
+        z-index: 9999;
+        width: 100%;
+        padding: 8px 16px;
       }
     }
 
@@ -592,7 +597,7 @@
         <!-- home page -->
         <div class="page active" id="home">
           <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-            style="margin: auto; padding-bottom: 30px;">
+            style="margin: auto; padding-bottom: 30px;" id="tab">
 
             <!-- section-1 -->
             <tr>
@@ -605,8 +610,10 @@
                       <table border="0" cellpadding="0" cellspacing="0" role="presentation">
                         <tr>
                           <td valign="middle" style="padding-right: 8px;">
-                            <img src="/image/logo.svg" alt="Logo"
-                              style="width: 75px; height: auto; display: block; vertical-align: middle;" />
+                            <button class="main-logo" id="main-logo">
+                              <img src="/image/logo.svg" alt="Logo"
+                                style="width: 75px; height: auto; display: block; vertical-align: middle;" />
+                            </button>
                           </td>
                         </tr>
                       </table>
@@ -676,7 +683,7 @@
                           </div>
                           <p class="verse" id="verse">John 3:16</p>
                           <p id="more-about" class="footer-text"></p>
-                          <button class="ask-pete-btn action-button" id="chatLink">
+                          <button class="ask-pete-btn action-button" id="chatLink" data-page="chat">
                             <img src="/image/chat-with-pete.png" class="chat-with-pete" alt="chat with pete" /> Ask
                             Pete
                           </button>
@@ -1002,8 +1009,7 @@
         <!-- chat page -->
         <div class="page right" id="chat">
           <div id="backToHome">
-            <button type="button" style="cursor: pointer; border: none; background: none; margin-right: auto;"
-              data-page="home">
+            <button class="action-button" data-page="home">
               <img src="/image/angle-left.png" alt="Left angle"
                 style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
               <span
@@ -1013,7 +1019,7 @@
             </button>
           </div>
           <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-            style="margin: auto;">
+            class="chat-inner">
 
             <!-- section-1 -->
             <tr>
@@ -1052,13 +1058,13 @@
             </tr>
 
             <!-- spacer -->
-            <tr>
+            <!-- <tr>
               <td style="padding-bottom: 20px"></td>
-            </tr>
+            </tr> -->
 
             <!-- section-2 -->
             <tr>
-              <td valign="top" style="padding: 10px 0;">
+              <td valign="top" class="mobile-sticky-back">
                 <button class="action-button" style="display: inline-block; background: transparent;" data-page="home">
                   <img src="/image/angle-left.png" alt="Left angle"
                     style="width: 24px; height: auto; display: inline-block; vertical-align: middle; padding-right: 12px;" />
@@ -1077,11 +1083,18 @@
 
             <!-- section-3 -->
             <tr>
-              <td valign="top"
-                style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
-                <p id="title"
-                  style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                </p>
+              <td style="padding: 0 16px;">
+                <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                  style="margin: auto;">
+                  <tr>
+                    <td valign="top"
+                      style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
+                      <p id="title"
+                        style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                      </p>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
 
@@ -1092,7 +1105,7 @@
 
             <!-- section-4 -->
             <tr>
-              <td>
+              <td style="padding: 0 16px;">
                 <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
                   style="margin: auto;">
                   <tr>
@@ -1115,7 +1128,7 @@
 
             <!-- section-5 -->
             <tr>
-              <td>
+              <td style="padding: 0 16px;">
                 <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
                   style="margin: auto;">
                   <tr id="response">
@@ -1134,8 +1147,7 @@
 
       <!-- chat -->
       <div class="chat">
-        <button type="button" id="openPopup"
-          style="font-family: 'Lora', Georgia, serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #606161; background: none; border: 1px solid #839790; width: 100%; cursor: pointer; padding: 0; text-align: left; background-color: #fff; padding: 12px 16px; border-radius: 12px;">
+        <button type="button" id="openPopup">
           Let's Chat...
         </button>
       </div>
@@ -1178,6 +1190,9 @@
     const content = document.getElementById('content');
     const scrollbar = document.getElementById('customScrollbar');
     const thumb = document.getElementById('scrollbarThumb');
+    const innerPage = document.querySelector('.inner-page');
+    const mainWrapper = document.querySelector('.main-wrapper');
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
 
     /***********************/
     /* today's date & year */
@@ -1195,7 +1210,7 @@
     let startScrollTop = 0;
 
     function updateScrollbar() {
-      const scrollHeight = content.scrollHeight;
+      const scrollHeight = content.scrollHeight + 42;
       const clientHeight = content.clientHeight;
       const scrollTop = content.scrollTop;
 
@@ -1265,14 +1280,7 @@
 
         const verseContent = document.querySelector('#verse-content');
         const verse = document.querySelector('#verse');
-        const chatLink = document.querySelector('#chatLink');
         const moreAbout = document.querySelector('#more-about');
-        chatLink.addEventListener('click', function () {
-          navigateToPage('chat');
-          chat();
-          // window.location.href = `chat.html?tag=${tag}`;
-        })
-        // chatLink.setAttribute('href', `chat.html?tag=${tag}`);
         verseContent.innerHTML = content.content;
         verse.innerHTML = content.verse;
         moreAbout.innerHTML = `Want to know more about this${content.verse ? ' verse' : '?'}`;
@@ -1300,7 +1308,7 @@
 
       // Show or hide the 'ellipsis-end-quote' element based on line count
       if (lineCount >= 14) {
-        quElement.style.display = 'inline'; // or 'block' depending on your layout
+        quElement.style.display = 'inline';
       } else {
         quElement.style.display = 'none';
       }
@@ -1370,12 +1378,17 @@
       }, 10);
     }
 
+    const scrollableContainer = isMobile ? mainWrapper : innerPage;
+
     document.querySelectorAll('.action-button').forEach(button => {
       button.addEventListener('click', function () {
-        const targetPage = this.getAttribute('data-page');
-        if (targetPage) {
-          navigateToPage(targetPage);
-        }
+        const targetPage = button.dataset.page;
+
+        scrollableContainer.scrollTo({ top: 0, behavior: 'smooth' });
+
+        if (targetPage === 'chat') chat();
+
+        setTimeout(() => navigateToPage(targetPage), 200)
       });
     });
 
@@ -1387,6 +1400,26 @@
 
     // Set initial history state
     history.replaceState({ page: 'home' }, '', '');
+
+    /***********************/
+    /* Scroll to top */
+    /***********************/
+    const scrollToTopBtn = document.getElementById('main-logo');
+
+    function scrollToTop() {
+      if (isMobile) {
+        mainWrapper.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      } else if (innerPage) {
+        innerPage.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    }
+    scrollToTopBtn.addEventListener('click', scrollToTop);
   </script>
 </body>
 
