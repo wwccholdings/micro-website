@@ -16,20 +16,35 @@ export default function chat() {
 
   // Create chat message HTML
   function createChatMessage(aiMessage) {
-    return `<td style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;">
-                    <table valign="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-                           style="margin: auto;" class="after-content-exists" >
-                      <tr>
-                        <td valign="top" style="padding-bottom: 16px;">
-                          <p style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
-                             ${markdownToHtml(aiMessage)}
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                 </td>`;
-  }
+    return `<td 
+              style="padding: 12px; background-color: #fff; box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08); border-radius: 12px;"
+            >
+              <table 
+                valign="center" 
+                role="presentation" 
+                cellspacing="0" 
+                cellpadding="0" 
+                border="0" 
+                width="100%"  
+                style="margin: auto;" 
+                class="after-content-exists" 
+              >
+                <tr>
+                  <td valign="top" style="padding-bottom: 16px;">
+                    <p style="font-family: 'Lora', Georgia, serif, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: #181818; display: inline-block; vertical-align: middle; margin: 0;">
+                        ${markdownToHtml(aiMessage)}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>`;
+      }
 
+  // whitelisted tag
+  const validTags = ['default', 'john-3-16', 'romans-8-28', 'psalm-23-1',
+    'proverbs-3-5-6', 'isaiah-41-10', 'matthew-11-28',
+    'philippians-4-13', '2-timothy-1-7', 'jeremiah-29-11',
+    'galatians-5-22-23'];
 
   // Load and display chat content
   fetch('/chat.json')
@@ -37,19 +52,20 @@ export default function chat() {
     .then(data => {
       const urlParams = new URLSearchParams(window.location.search);
       const tag = urlParams.get('tag');
-      const content = tag && data[tag] ? data[tag] : data.default;
+      const safeTag = validTags.includes(tag) ? tag : null;
+      const content = safeTag && data[safeTag] ? data[safeTag] : data.default;
 
-      const chatContainer = document.querySelector('#response').parentElement;
+      //const chatContainer = document.querySelector('#response').parentElement;
       const title = document.querySelector('#title');
       const human = document.querySelector('#human');
-      title.innerHTML = content.title;
-      human.innerHTML = content.human;
+      title.textContent = content.title;
+      human.textContent = content.human;
 
       let originalContent = createChatMessage(content.ai);
       // Initialize streaming
       setTimeout(() => {
         const temp = document.createElement('div');
-        temp.innerHTML = originalContent;
+        temp.textContent = originalContent;
 
         // Save the structure but clear text content
         responseContainer.innerHTML = originalContent;
@@ -73,25 +89,36 @@ export default function chat() {
     })
     .catch(error => console.error('Error loading chat content:', error));
 
+  // Escape HTML BEFORE processing markdown
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
 
   // Function to convert markdown to HTML
   function markdownToHtml(markdown) {
+    // FIRST escape all HTML
+    let escaped = escapeHtml(markdown);
+
     // Basic markdown conversion - expand as needed
-    return markdown
+    return escaped
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
       .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
       .replace(/\n\n/g, '</p><p>') // Paragraphs
       .replace(/\n/g, '<br>') // Line breaks
-      .replace(/#{3} (.*)/g, '<h3>$1</h3>') // H3
-      .replace(/#{2} (.*)/g, '<h2>$1</h2>') // H2
-      .replace(/#{1} (.*)/g, '<h1>$1</h1>'); // H1
+      .replace(/#{3} (.*)/g, (_, text) => '<h3>' + escapeHtml(text) + '</h3>') // H3
+      .replace(/#{2} (.*)/g, (_, text) => '<h2>' + escapeHtml(text) + '</h2>') // H2
+      .replace(/#{1} (.*)/g, (_, text) => '<h1>' + escapeHtml(text) + '</h1>'); // H1
   }
-  const openButton = document.getElementById('openPopup');
+  const openPopupBtn = document.getElementById('openPopup');
   const popup = document.getElementById('popup');
   const innerPage = document.querySelector('.inner-page');
   const backToHomeBtn = document.getElementById('backToHome');
+  const closePopup = document.querySelectorAll('.close-popup');
+  const popupInner = document.querySelector('.popup-inner');
 
-  openButton.addEventListener('click', function (e) {
+  openPopupBtn.addEventListener('click', function (e) {
     e.stopPropagation();
     popup.classList.add('show');
   });
@@ -100,6 +127,13 @@ export default function chat() {
     if (!popupInner.contains(event.target)) {
       popup.classList.remove('show');
     }
+  });
+
+  closePopup.forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      popup.classList.remove('show');
+    });
   });
 
   function handleScroll(scrollTop) {
@@ -144,12 +178,10 @@ export default function chat() {
   // Attach initially
   attachScrollHandler();
 
-
   // Reattach on resize (when crossing 640px)
   window.addEventListener('resize', attachScrollHandler);
 
   const responseContainer = document.getElementById('response');
-  const popupInner = document.querySelector('.popup-inner');
 
   // Function to extract text content from HTML elements
   function extractTextNodes(element, texts = []) {
