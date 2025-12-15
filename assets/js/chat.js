@@ -41,7 +41,7 @@ export default function chat() {
       }
 
   // whitelisted tag
-  const validTags = ['default', 'john-3-16', 'romans-8-28', 'psalm-23-1',
+  const validTags = ['john-3-16', 'romans-8-28', 'psalm-23-1',
     'proverbs-3-5-6', 'isaiah-41-10', 'matthew-11-28',
     'philippians-4-13', '2-timothy-1-7', 'jeremiah-29-11',
     'galatians-5-22-23'];
