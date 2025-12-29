@@ -129,10 +129,15 @@ export default function chat() {
     }
   });
 
-  closePopup.forEach(button => {
-    button.addEventListener('click', (e) => {
+  closePopup.forEach((button) => {
+    button.addEventListener("click", (e) => {
       e.preventDefault();
-      popup.classList.remove('show');
+      popup.classList.remove("show");
+
+      const link = sessionStorage.getItem("appLink");
+      if (link) {
+        window.open(link, "_blank");
+      }
     });
   });
 
