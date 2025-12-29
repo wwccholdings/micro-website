@@ -12,9 +12,41 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Lora';
+  src: url('../fonts/Lora-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('../fonts/Lora-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('../fonts/Lora-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('../fonts/Lora-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   width: 100%;
-  font-family: 'Lora', Arial, sans-serif;
+  font-family: 'Lora', serif;
   margin: 0;
   padding: 0 !important;
   -webkit-text-size-adjust: 100%;
@@ -36,11 +68,6 @@ td {
 
 img {
   -ms-interpolation-mode: bicubic;
-}
-
-body,
-html {
-  font-family: 'Lora', Arial, sans-serif !important;
 }
 
 button {
