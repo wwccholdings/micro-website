@@ -13,40 +13,72 @@
 }
 
 @font-face {
-  font-family: 'Lora';
-  src: url('../fonts/Lora-Regular.woff2') format('woff2');
+  font-family: "Lora";
+  src: url("../fonts/Lora-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Lora';
-  src: url('../fonts/Lora-Medium.woff2') format('woff2');
+  font-family: "Lora";
+  src: url("../fonts/Lora-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../fonts/Lora-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Lora';
-  src: url('../fonts/Lora-SemiBold.woff2') format('woff2');
+  font-family: "Lora";
+  src: url("../fonts/Lora-MediumItalic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../fonts/Lora-SemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Lora';
-  src: url('../fonts/Lora-Bold.woff2') format('woff2');
+  font-family: "Lora";
+  src: url("../fonts/Lora-SemiBoldItalic.woff") format("woff2");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../fonts/Lora-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Lora";
+  src: url("../fonts/Lora-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 body {
   width: 100%;
-  font-family: 'Lora', serif;
+  font-family: "Lora", serif;
   margin: 0;
   padding: 0 !important;
   -webkit-text-size-adjust: 100%;
@@ -80,11 +112,126 @@ a {
   text-decoration: none;
 }
 
+/* utilities */
+.bg-F2ECE9 {
+  background-color: #f2ece9;
+}
+
+.bg-EFEFEF {
+  background-color: #efefef;
+}
+
+.text-7A7B7B {
+  color: #7a7b7b;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.m-auto {
+  margin: auto;
+}
+
+.my-0 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.pt-10 {
+  padding-top: 10px;
+}
+
+.pt-16 {
+  padding-top: 16px;
+}
+
+.pb-0 {
+  padding-bottom: 0;
+}
+
+.pb-12 {
+  padding-bottom: 12px;
+}
+
+.pb-16 {
+  padding-bottom: 16px;
+}
+
+.pb-20 {
+  padding-bottom: 20px;
+}
+
+.pb-30 {
+  padding-bottom: 30px;
+}
+
+.pb-40 {
+  padding-bottom: 40px;
+}
+
+.pr-8 {
+  padding-right: 8px;
+}
+
+.px-0 {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.px-16 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.px-20 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.py-40 {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.rounded-t-12 {
+  border-radius: 12px 12px 0 0;
+}
+
+.rounded-b-12 {
+  border-radius: 0 0 12px 12px;
+}
+
+.line-clamp-1 {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+
 /* custom classes */
 .main-wrapper {
   width: 100%;
   height: 100vh;
-  background: linear-gradient(140deg, #617E93, #E1BDA7);
+  background: linear-gradient(140deg, #617e93, #e1bda7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,7 +246,7 @@ a {
   max-height: 798px;
   aspect-ratio: 9 / 19.5;
   width: auto;
-  background: #FDFCFA;
+  background: #fdfcfa;
   border-radius: min(6vh, 58px);
   padding: 0 0 32px;
   overflow-y: auto;
@@ -113,6 +260,15 @@ a {
 /* Chrome / Safari */
 .inner-page::-webkit-scrollbar {
   display: none;
+}
+
+#top-nav {
+  position: sticky;
+  top: 0;
+  background-color: #fdfcfa;
+  width: 100%;
+  z-index: 9999;
+  padding: 36px 16px 4px;
 }
 
 .main-logo {
@@ -131,10 +287,10 @@ a {
   padding: 4px 10px;
   border-radius: 24px;
   box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15);
-  background-color: #647D74;
+  background-color: #647d74;
   text-decoration: none;
   color: #fff;
-  font-family: 'Lora', Arial, san-serif;
+  font-family: "Lora", Arial, san-serif;
   font-size: 12px;
   font-weight: 500;
   line-height: 16px;
@@ -142,7 +298,7 @@ a {
 }
 
 .hero-section-title {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 24px;
   font-weight: 400;
   line-height: 28px;
@@ -153,11 +309,11 @@ a {
 }
 
 .hero-section-description {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
-  color: #1F2020;
+  color: #1f2020;
   vertical-align: middle;
   padding-bottom: 16px;
   margin: 0;
@@ -169,11 +325,11 @@ a {
   display: inline-block;
   padding: 8px 16px;
   border-radius: 24px;
-  border: 1px solid #647D74;
-  background-color: #FFF;
+  border: 1px solid #647d74;
+  background-color: #fff;
   text-decoration: none;
-  color: #647D74;
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  color: #647d74;
+  font-family: "Lora", serif;
   font-size: 14px;
   font-weight: 700;
   line-height: 18px;
@@ -187,7 +343,7 @@ a {
   padding: 16px;
   width: 100%;
   box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15);
-  background-image: url('../image/bg-ask-pete.png');
+  background-image: url("../image/bg-ask-pete.png");
   background-size: inherit;
   background-position: center 25%;
   position: relative;
@@ -228,12 +384,12 @@ a {
 }
 
 .quote-text::before {
-  content: '“';
+  content: "“";
   margin-right: 3px;
 }
 
 .quote-text::after {
-  content: '”';
+  content: "”";
   margin-left: 3px;
 }
 
@@ -244,7 +400,7 @@ a {
   color: #fff;
   font-weight: 600;
   line-height: 28px;
-  text-shadow: 0 1px 1px rgba(91, 114, 106, 0.40);
+  text-shadow: 0 1px 1px rgba(91, 114, 106, 0.4);
   position: relative;
   z-index: 1;
 }
@@ -258,7 +414,7 @@ a {
   color: #fff;
   font-weight: 600;
   line-height: 28px;
-  text-shadow: 0 1px 1px rgba(91, 114, 106, 0.40);
+  text-shadow: 0 1px 1px rgba(91, 114, 106, 0.4);
   z-index: 1;
 }
 
@@ -266,7 +422,7 @@ a {
   font-size: 14px;
   line-height: 18px;
   color: #fff;
-  text-shadow: 0 1px 1px rgba(91, 114, 106, 0.40);
+  text-shadow: 0 1px 1px rgba(91, 114, 106, 0.4);
   margin: 12px 0 28px;
 }
 
@@ -277,7 +433,7 @@ a {
   gap: 8px;
   width: 100%;
   max-width: 134px;
-  background-color: #647D74;
+  background-color: #647d74;
   margin: 10px auto 0;
   padding: 8px 16px;
   border-radius: 24px;
@@ -307,7 +463,7 @@ a {
   transform: translate(-50%, -50%);
   width: 103%;
   height: 110%;
-  background-image: conic-gradient(from var(--angle), #36696D, #BCBF8D);
+  background-image: conic-gradient(from var(--angle), #36696d, #bcbf8d);
   border-radius: 24px;
   z-index: -1;
   animation: spin 3s linear infinite;
@@ -357,8 +513,15 @@ a {
   margin-top: 28px;
 }
 
+.app-download {
+  margin: auto;
+  box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15);
+  padding: 20px 22px;
+  border-radius: 12px;
+}
+
 .app-download-section-title {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 22px;
@@ -369,11 +532,11 @@ a {
   padding-bottom: 20px;
 }
 
-.app-download-section-title span {
-  color: #7C411E;
+/* .app-download-section-title span {
+  color: #7c411e;
   display: inline-block;
   margin-top: 4px;
-}
+} */
 
 .app-download-section {
   display: flex;
@@ -394,8 +557,14 @@ a {
   vertical-align: middle;
 }
 
+.features-section {
+  background-color: #efefef;
+  padding: 40px 0;
+  border-radius: 12px 12px 0 0;
+}
+
 .features-main-title {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 24px;
   font-weight: 400;
   line-height: 28px;
@@ -407,11 +576,11 @@ a {
 }
 
 .features-sub-title {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 22px;
-  color: #7C411E;
+  color: #7c411e;
   letter-spacing: 0.18px;
   vertical-align: middle;
   margin: 0;
@@ -427,7 +596,7 @@ a {
 }
 
 .features-description {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
@@ -438,7 +607,7 @@ a {
 }
 
 .cross-connect {
-  background: url('../image/bg_cross_connect.png');
+  background: url("../image/bg_cross_connect.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -457,7 +626,7 @@ a {
 }
 
 .cross-connect-description {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 16px;
   line-height: 20px;
   color: #ffffff;
@@ -467,11 +636,11 @@ a {
 }
 
 .cross-connect-pre-order-btn {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   display: inline-block;
   width: 200px;
   max-width: 200px;
-  background-color: #647D74;
+  background-color: #647d74;
   color: #ffffff;
   text-decoration: none;
   font-weight: 700;
@@ -490,11 +659,11 @@ a {
 }
 
 .priority h5 {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 14px;
   font-weight: 600;
   line-height: 18px;
-  color: #647D74;
+  color: #647d74;
   letter-spacing: 0.14px;
   vertical-align: middle;
   margin: 0;
@@ -502,7 +671,7 @@ a {
 }
 
 .priority p {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
@@ -512,15 +681,28 @@ a {
   margin: 0;
 }
 
+.connect-with-us-section {
+  background-color: #f0f2f1;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  padding-top: 24px;
+}
+
 .connect-with-us-text {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.12px;
   font-weight: 600;
-  color: #1F2020;
+  color: #1f2020;
   font-family: Lora, sans-serif, serif;
   text-align: center;
+}
+
+.social-icon-wrapper {
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .social-img {
@@ -530,16 +712,27 @@ a {
   border: 0;
 }
 
+.footer-links-section {
+  background-color: #f0f2f1;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.footer-links-section table {
+  border-radius: 0 0 24px 24px;
+  padding: 0 0 24px;
+}
+
 .footer-privacy-tandc {
   font-size: 12px;
-  color: #1F2020;
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  color: #1f2020;
+  font-family: "Lora", serif;
   text-align: center;
   line-height: 18px;
 }
 
 .footer-privacy-tandc a {
-  color: #1F2020;
+  color: #1f2020;
   text-decoration: underline;
 }
 
@@ -606,7 +799,7 @@ a {
 }
 
 .mobile-sticky-back .action-button span {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
@@ -624,7 +817,7 @@ a {
   left: 0;
   right: 0;
   z-index: 10;
-  background: #FDFCFA;
+  background: #fdfcfa;
   width: 100%;
   border-top-left-radius: 2vh;
   border-top-right-radius: 2vh;
@@ -640,7 +833,11 @@ a {
   width: calc(100% - 8%);
   z-index: 1000;
   padding: 12px 16px 30px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, #FFF 88.18%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    #fff 88.18%
+  );
   border-bottom-left-radius: 6vh;
   border-bottom-right-radius: 6vh;
 }
@@ -653,7 +850,7 @@ a {
   opacity: 0;
   visibility: hidden;
   z-index: -1;
-  background: linear-gradient(180deg, rgba(184, 195, 191, 0.00) 0%, #B8C3BF 100%);
+  background: linear-gradient(180deg, rgba(184, 195, 191, 0) 0%, #b8c3bf 100%);
   width: calc(100% - 32px);
   backdrop-filter: blur(4px);
   padding: 32px 16px;
@@ -703,7 +900,7 @@ a {
 .popup-inner .popup-btn-wrapper a {
   width: 100%;
   max-width: 150px;
-  padding: 8px 16px;
+  padding: 6px 16px;
   border-radius: 24px;
   font-size: 14px;
   font-weight: 700;
@@ -718,12 +915,12 @@ a {
 .popup-inner .popup-btn-wrapper .explore-features-btn {
   background-color: transparent;
   letter-spacing: 0.14px;
-  color: #647D74;
-  border: 2px solid #647D74;
+  color: #647d74;
+  border: 2px solid #647d74;
 }
 
 .popup-inner .popup-btn-wrapper .download-app-btn {
-  background-color: #647D74;
+  background-color: #647d74;
   color: #ffffff;
   border: 2px solid transparent;
 }
@@ -747,14 +944,14 @@ a {
   cursor: pointer;
   transition: width 0.3s;
   height: 200px;
-  border: 1px solid rgba(255, 255, 255, 0.50);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .scrollbar-thumb {
   position: absolute;
   width: 8px;
   margin: 1px 0;
-  background: rgba(255, 255, 255, 0.70);
+  background: rgba(255, 255, 255, 0.7);
   border-radius: 10px;
   cursor: grab;
   transition: background 0.3s;
@@ -765,7 +962,7 @@ a {
 }
 
 #openPopup {
-  font-family: 'Lora', Georgia, serif;
+  font-family: "Lora", Georgia, serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
@@ -777,9 +974,9 @@ a {
   padding: 0;
   text-align: left;
   background-color: #fff;
-  padding: 12px 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px 0 rgba(100, 125, 116, 0.50);
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px 0 rgba(100, 125, 116, 0.5);
   position: relative;
 }
 
@@ -792,7 +989,7 @@ a {
   transform: translate(-50%, -50%);
   width: 103%;
   height: 110%;
-  background-image: conic-gradient(from var(--angle), #36696D, #BCBF8D);
+  background-image: conic-gradient(from var(--angle), #36696d, #bcbf8d);
   border-radius: 12px;
   z-index: -1;
   filter: blur(16px);
@@ -809,7 +1006,7 @@ a {
 }
 
 #chat .action-button span {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
@@ -838,7 +1035,7 @@ a {
 }
 
 #chat .chat-header .pete-top span {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
@@ -849,7 +1046,7 @@ a {
 }
 
 #todaysDate {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
@@ -865,10 +1062,10 @@ a {
   padding: 4px 10px;
   border-radius: 24px;
   box-shadow: 0 4px 16px 0 rgba(91, 114, 106, 0.15);
-  background-color: #647D74;
+  background-color: #647d74;
   text-decoration: none;
   color: #fff;
-  font-family: 'Lora', Arial, san-serif;
+  font-family: "Lora", Arial, san-serif;
   font-size: 12px;
   font-weight: 500;
   line-height: 16px;
@@ -876,7 +1073,7 @@ a {
 }
 
 #title {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
@@ -887,7 +1084,7 @@ a {
 }
 
 #human {
-  font-family: 'Lora', Georgia, serif, Arial, sans-serif;
+  font-family: "Lora", serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
@@ -907,9 +1104,23 @@ a {
   }
 }
 
+.title-wrapper {
+  padding: 12px;
+  background-color: #fff;
+  box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08);
+  border-radius: 12px;
+}
+
+.human-text-wrapper {
+  padding: 12px;
+  background-color: #f3ebe0;
+  box-shadow: 0 1px 6px 0 rgba(91, 114, 106, 0.08);
+  border-radius: 12px;
+}
+
 @media only screen and (max-width: 640px) {
   .main-wrapper {
-    background: #FDFCFA;
+    background: #fdfcfa;
     height: 100%;
     align-items: start;
   }
@@ -950,7 +1161,7 @@ a {
   #top-nav {
     position: sticky !important;
     top: 0 !important;
-    background: #fff !important;
+    background: #fdfcfa !important;
     z-index: 9999;
     padding: 8px 16px 4px !important;
   }
@@ -1002,7 +1213,7 @@ a {
   .mobile-sticky-back {
     position: sticky;
     top: 0;
-    background-color: #FDFCFA;
+    background-color: #fdfcfa;
     z-index: 9999;
     width: 100%;
     padding: 8px 16px;
