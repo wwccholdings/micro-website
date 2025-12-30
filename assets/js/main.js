@@ -104,7 +104,7 @@ fetch('/chat.json')
     const moreAbout = document.querySelector('#more-about');
     verseContent.textContent = content.content;
     verse.textContent = content.verse;
-    moreAbout.textContent = `Want to know more about this${content.verse ? ' verse' : '?'}`;
+    moreAbout.textContent = `Want to know more about this${content.verse ? ' verse?' : '?'}`;
 
     requestAnimationFrame(() => {
       requestAnimationFrame(updateQuoteDisplay);
